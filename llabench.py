@@ -100,10 +100,52 @@ def main():
     print(f"\nAverage: {summary['avg_completion_tokens']} tokens, "
           f"{summary['avg_time_s']}s, {summary['avg_tps']} tok/s")
 
-    # Write results to file
-    output = f"results/benchmark_slot{args.slot}_{'mtp' if not args.no_mtp else 'no-mtp'}.json"
+    # Write results to benchmarks.json
+    output = "data/benchmarks.json"
+    with open(output, "r") as f:
+        data = json.load(f)
+    new_entry = {
+        "id": f"gb10-slot{args.slot}-{'mtp' if not args.no_mtp else 'no-mtp'}-{int(time.time())}",
+        "date": time.strftime("%Y-%m-%d"),
+        "source": "own-run",
+        "source_url": None,
+        "device": {
+            "name": "GB10 (DGX Spark)",
+            "gpu": "NVIDIA GB10 (Grace Blackwell)",
+            "compute_cap": "SM 12.1",
+            "memory_bandwidth": "273 GB/s LPDDR5x",
+            "unified_memory": "128 GB"
+        },
+        "engine": {
+            "name": "llama.cpp",
+            "version": "v222 (453a869)",
+            "fork": None,
+            "fork_url": None,
+            "config": {}
+        },
+        "model": {
+            "name": "Qwen3.6-35B-A3B-uncensored-heretic-Native-MTP-Preserved-NVFP4-Experts-Only",
+            "quant": "NVFP4 Experts-Only",
+            "total_params": 35000000000,
+            "active_params": 3000000000,
+            "mtp": not args.no_mtp
+        },
+        "test": {
+            "context_size": None,
+            "concurrency": 1,
+            "prompt_tokens": None,
+            "prompt_processing_speed_tps": None,
+            "token_generation_speed_tps": summary["avg_tps"],
+            "avg_completion_tokens": summary["avg_completion_tokens"],
+            "rounds": args.rounds,
+            "note": f"Slot {args.slot}, {'MTP' if not args.no_mtp else 'no-MTP'}"
+        },
+        "notes": ""
+    }
+    data.append(new_entry)
     with open(output, "w") as f:
-        json.dump(summary, f, indent=2)
+        json.dump(data, f, indent=2, ensure_ascii=False)
+        f.write("\n")
     print(f"Results written to {output}")
 
 

@@ -597,5 +597,119 @@
       "note": "c=1: 61.49 tok/s, c=2: 97.87 tok/s aggregate, c=4: 174.69 tok/s aggregate. Single long decode: 57.49 tok/s (512 tokens in 8.91s). MTP accept rate ~0.93 mean, accept length ~1.87/2."
     },
     "notes": "SGLang native MTP on GB10 NVFP4. Includes patches/qwen3_5.py loader fix for compressed-tensors GDN linear-attention projections. No external DFlash draft — uses built-in model_mtp.safetensors from checkpoint."
+  },
+  {
+    "id": "gb10-mtp-slot1-run1",
+    "date": "2026-05-24",
+    "source": "own-run",
+    "source_url": null,
+    "device": {
+      "name": "GB10 (DGX Spark)",
+      "gpu": "NVIDIA GB10 (Grace Blackwell)",
+      "compute_cap": "SM 12.1",
+      "memory_bandwidth": "273 GB/s LPDDR5x",
+      "unified_memory": "128 GB"
+    },
+    "engine": {
+      "name": "llama.cpp",
+      "version": "v222 (453a869)",
+      "fork": null,
+      "fork_url": null,
+      "config": {
+        "parallel": 2,
+        "flash_attn": true,
+        "kv_unified": true,
+        "cache_prompt": true,
+        "cache_reuse": 4096,
+        "no_cache_idle_slots": true,
+        "swa_full": true,
+        "spec_type": "draft-mtp",
+        "spec_draft_n_max": 3,
+        "spec_draft_p_min": 0.75,
+        "batch_size": 4096,
+        "ubatch_size": 2048,
+        "ctx_checkpoints": 32,
+        "checkpoint_min_step": 256,
+        "slot_prompt_similarity": 0.5,
+        "fit_on": true,
+        "fit_target": 1024,
+        "fit_ctx": 262144
+      }
+    },
+    "model": {
+      "name": "Qwen3.6-35B-A3B-uncensored-heretic-Native-MTP-Preserved-NVFP4-Experts-Only",
+      "quant": "NVFP4 Experts-Only",
+      "total_params": 35000000000,
+      "active_params": 3000000000,
+      "mtp": true
+    },
+    "test": {
+      "context_size": 90,
+      "concurrency": 1,
+      "prompt_tokens": 90,
+      "prompt_processing_speed_tps": null,
+      "token_generation_speed_tps": 54.0,
+      "avg_completion_tokens": 2308,
+      "rounds": 10,
+      "note": "Slot 1 (subagent), MTP enabled"
+    },
+    "notes": "First benchmark run on GB10 with MTP. Consistent 51-56 tok/s range."
+  },
+  {
+    "id": "gb10-mtp-slot1-run2",
+    "date": "2026-05-24",
+    "source": "own-run",
+    "source_url": null,
+    "device": {
+      "name": "GB10 (DGX Spark)",
+      "gpu": "NVIDIA GB10 (Grace Blackwell)",
+      "compute_cap": "SM 12.1",
+      "memory_bandwidth": "273 GB/s LPDDR5x",
+      "unified_memory": "128 GB"
+    },
+    "engine": {
+      "name": "llama.cpp",
+      "version": "v222 (453a869)",
+      "fork": null,
+      "fork_url": null,
+      "config": {
+        "parallel": 2,
+        "flash_attn": true,
+        "kv_unified": true,
+        "cache_prompt": true,
+        "cache_reuse": 4096,
+        "no_cache_idle_slots": true,
+        "swa_full": true,
+        "spec_type": "draft-mtp",
+        "spec_draft_n_max": 3,
+        "spec_draft_p_min": 0.75,
+        "batch_size": 4096,
+        "ubatch_size": 2048,
+        "ctx_checkpoints": 32,
+        "checkpoint_min_step": 256,
+        "slot_prompt_similarity": 0.5,
+        "fit_on": true,
+        "fit_target": 1024,
+        "fit_ctx": 262144
+      }
+    },
+    "model": {
+      "name": "Qwen3.6-35B-A3B-uncensored-heretic-Native-MTP-Preserved-NVFP4-Experts-Only",
+      "quant": "NVFP4 Experts-Only",
+      "total_params": 35000000000,
+      "active_params": 3000000000,
+      "mtp": true
+    },
+    "test": {
+      "context_size": 90,
+      "concurrency": 1,
+      "prompt_tokens": 90,
+      "prompt_processing_speed_tps": null,
+      "token_generation_speed_tps": 53.0,
+      "avg_completion_tokens": 1994,
+      "rounds": 10,
+      "note": "Slot 1 (subagent), MTP enabled"
+    },
+    "notes": "Second benchmark run. Slightly lower avg tokens per run."
   }
 ]
