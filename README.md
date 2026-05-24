@@ -1,0 +1,52 @@
+# llabench
+
+Benchmarking repository for Qwen3.6-35B-A3B on GB10 (DGX Spark) and RTX 3090.
+
+## Structure
+
+```
+llabench/
+├── llabench.py          # Benchmark script
+├── BENCHMARKS.md        # External benchmark data from community sources
+├── README.md            # This file
+└── results/             # Our benchmark run results
+    └── gb10_mtp_slot1.json  # Current GB10 MTP slot 1 benchmarks
+```
+
+## Quick Start
+
+```bash
+# Run benchmark (slot 1, 10 rounds, with MTP)
+python3 llabench.py --slot 1 --rounds 10
+
+# Run without MTP (baseline)
+python3 llabench.py --slot 1 --rounds 10 --no-mtp
+
+# Use different prompt
+python3 llabench.py --slot 1 --rounds 10 --prompt code
+```
+
+## Current Results
+
+See `results/` for our benchmark runs and `BENCHMARKS.md` for community data.
+
+**Key finding:** GB10 is memory-bandwidth bound at 273 GB/s. Theoretical ceiling ~91 tok/s single-stream, real-world realizes ~32% = 28-30 tok/s for FP8. NVFP4 projects ~55-60 tok/s.
+
+**Our result:** ~53-54 tok/s on GB10 with MTP enabled at 262K context — already near the projected NVFP4 ceiling.
+
+## Hardware Comparison
+
+| Hardware | Bandwidth | Unified Mem | Notes |
+|----------|----------|-------------|-------|
+| GB10 (DGX Spark) | 273 GB/s LPDDR5x | 128 GB | CPU-GPU unified |
+| RTX 3090 | ~1000 GB/s GDDR6X | No | PCIe, 24 GB |
+
+GB10 has ~4x less bandwidth than RTX 3090 — this is the dominant throughput factor.
+
+## Future Work
+
+- Context depth sweep (32K, 64K, 128K, 262K)
+- KV cache quantization comparison (q8_0 vs f16 vs TurboQuant)
+- Batch size tuning
+- MTP n=2 vs n=3 comparison
+- Quant comparison (NVFP4 vs Q4_K_XL on GB10)

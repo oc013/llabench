@@ -1,0 +1,59 @@
+{
+  "run_1": {
+    "date": "2026-05-24",
+    "model": "Qwen3.6-35B-A3B-uncensored-heretic-Native-MTP-Preserved-NVFP4-Experts-Only",
+    "slot": 1,
+    "mtp": true,
+    "context": "262K max",
+    "kv_cache": "f16 unified (--kv-unified)",
+    "rounds": 10,
+    "avg_completion_tokens": 2308,
+    "avg_time_s": 42.76,
+    "avg_tps": 54.0,
+    "per_round": [
+      {"round": 1, "tokens": 2383, "elapsed_s": 46.07, "tps": 51.7},
+      {"round": 2, "tokens": 1996, "elapsed_s": 36.86, "tps": 54.2},
+      {"round": 3, "tokens": 2388, "elapsed_s": 45.29, "tps": 52.7},
+      {"round": 4, "tokens": 2550, "elapsed_s": 45.84, "tps": 55.6},
+      {"round": 5, "tokens": 2357, "elapsed_s": 43.25, "tps": 54.5},
+      {"round": 6, "tokens": 2342, "elapsed_s": 44.24, "tps": 52.9},
+      {"round": 7, "tokens": 1702, "elapsed_s": 31.45, "tps": 54.1},
+      {"round": 8, "tokens": 2395, "elapsed_s": 43.35, "tps": 55.2},
+      {"round": 9, "tokens": 2447, "elapsed_s": 45.52, "tps": 53.8},
+      {"round": 10, "tokens": 2524, "elapsed_s": 45.69, "tps": 55.2}
+    ]
+  },
+  "run_2": {
+    "date": "2026-05-24",
+    "model": "Qwen3.6-35B-A3B-uncensored-heretic-Native-MTP-Preserved-NVFP4-Experts-Only",
+    "slot": 1,
+    "mtp": true,
+    "context": "262K max",
+    "kv_cache": "f16 unified (--kv-unified)",
+    "rounds": 10,
+    "avg_completion_tokens": 1994,
+    "avg_time_s": 37.54,
+    "avg_tps": 53.0,
+    "per_round": [
+      {"round": 1, "tokens": 1981, "elapsed_s": 41.30, "tps": 48.0},
+      {"round": 2, "tokens": 3126, "elapsed_s": 54.53, "tps": 57.3},
+      {"round": 3, "tokens": 1853, "elapsed_s": 34.38, "tps": 53.9},
+      {"round": 4, "tokens": 1837, "elapsed_s": 35.03, "tps": 52.4},
+      {"round": 5, "tokens": 2489, "elapsed_s": 45.51, "tps": 54.7},
+      {"round": 6, "tokens": 1924, "elapsed_s": 37.74, "tps": 51.0},
+      {"round": 7, "tokens": 1701, "elapsed_s": 32.98, "tps": 51.6},
+      {"round": 8, "tokens": 1628, "elapsed_s": 30.54, "tps": 53.3},
+      {"round": 9, "tokens": 1655, "elapsed_s": 30.07, "tps": 55.0},
+      {"round": 10, "tokens": 1746, "elapsed_s": 33.33, "tps": 52.4}
+    ]
+  },
+  "single_shot": {
+    "date": "2026-05-24",
+    "model": "Qwen3.6-35B-A3B-uncensored-heretic-Native-MTP-Preserved-NVFP4-Experts-Only",
+    "slot": 1,
+    "mtp": true,
+    "tokens": 2998,
+    "elapsed_s": 56.0,
+    "tps": 53.5
+  }
+}
