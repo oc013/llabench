@@ -1,0 +1,532 @@
+[
+  {
+    "id": "gb10-mtp-slot1-run1",
+    "date": "2026-05-24",
+    "source": "own-run",
+    "source_url": null,
+    "device": {
+      "name": "GB10 (DGX Spark)",
+      "gpu": "NVIDIA GB10 (Grace Blackwell)",
+      "compute_cap": "SM 12.1",
+      "memory_bandwidth": "273 GB/s LPDDR5x",
+      "unified_memory": "128 GB"
+    },
+    "engine": {
+      "name": "llama.cpp",
+      "version": "v222 (453a869)",
+      "fork": null,
+      "fork_url": null,
+      "config": {
+        "parallel": 2,
+        "flash_attn": true,
+        "kv_unified": true,
+        "cache_prompt": true,
+        "cache_reuse": 4096,
+        "no_cache_idle_slots": true,
+        "swa_full": true,
+        "spec_type": "draft-mtp",
+        "spec_draft_n_max": 3,
+        "spec_draft_p_min": 0.75,
+        "batch_size": 4096,
+        "ubatch_size": 2048,
+        "ctx_checkpoints": 32,
+        "checkpoint_min_step": 256,
+        "slot_prompt_similarity": 0.5,
+        "fit_on": true,
+        "fit_target": 1024,
+        "fit_ctx": 262144
+      }
+    },
+    "model": {
+      "name": "Qwen3.6-35B-A3B-uncensored-heretic-Native-MTP-Preserved-NVFP4-Experts-Only",
+      "quant": "NVFP4 Experts-Only",
+      "total_params": 35000000000,
+      "active_params": 3000000000,
+      "mtp": true
+    },
+    "test": {
+      "context_size": 262144,
+      "concurrency": 1,
+      "prompt_tokens": null,
+      "prompt_processing_speed_tps": null,
+      "token_generation_speed_tps": 54.0,
+      "avg_completion_tokens": 2308,
+      "rounds": 10,
+      "note": "Slot 1 (subagent), MTP enabled"
+    },
+    "notes": "First benchmark run on GB10 with MTP. Consistent 51-56 tok/s range."
+  },
+  {
+    "id": "gb10-mtp-slot1-run2",
+    "date": "2026-05-24",
+    "source": "own-run",
+    "source_url": null,
+    "device": {
+      "name": "GB10 (DGX Spark)",
+      "gpu": "NVIDIA GB10 (Grace Blackwell)",
+      "compute_cap": "SM 12.1",
+      "memory_bandwidth": "273 GB/s LPDDR5x",
+      "unified_memory": "128 GB"
+    },
+    "engine": {
+      "name": "llama.cpp",
+      "version": "v222 (453a869)",
+      "fork": null,
+      "fork_url": null,
+      "config": {
+        "parallel": 2,
+        "flash_attn": true,
+        "kv_unified": true,
+        "cache_prompt": true,
+        "cache_reuse": 4096,
+        "no_cache_idle_slots": true,
+        "swa_full": true,
+        "spec_type": "draft-mtp",
+        "spec_draft_n_max": 3,
+        "spec_draft_p_min": 0.75,
+        "batch_size": 4096,
+        "ubatch_size": 2048,
+        "ctx_checkpoints": 32,
+        "checkpoint_min_step": 256,
+        "slot_prompt_similarity": 0.5,
+        "fit_on": true,
+        "fit_target": 1024,
+        "fit_ctx": 262144
+      }
+    },
+    "model": {
+      "name": "Qwen3.6-35B-A3B-uncensored-heretic-Native-MTP-Preserved-NVFP4-Experts-Only",
+      "quant": "NVFP4 Experts-Only",
+      "total_params": 35000000000,
+      "active_params": 3000000000,
+      "mtp": true
+    },
+    "test": {
+      "context_size": 262144,
+      "concurrency": 1,
+      "prompt_tokens": null,
+      "prompt_processing_speed_tps": null,
+      "token_generation_speed_tps": 53.0,
+      "avg_completion_tokens": 1994,
+      "rounds": 10,
+      "note": "Slot 1 (subagent), MTP enabled"
+    },
+    "notes": "Second benchmark run. Slightly lower avg tokens per run."
+  },
+  {
+    "id": "rikkarth-gb10-fp8-vllm",
+    "date": "2026-04-23",
+    "source": "external",
+    "source_url": "https://rikkarth.com/blog/2026-04-23-benchmark-results-for-qwen-qwen3-6-35b-a3b-fp8-nvidia-dgx-spark-gb10-serving-via-vllm",
+    "device": {
+      "name": "GB10 (DGX Spark)",
+      "gpu": "NVIDIA GB10 (Grace Blackwell)",
+      "compute_cap": "SM 12.1",
+      "memory_bandwidth": "273 GB/s LPDDR5x",
+      "unified_memory": "128 GB"
+    },
+    "engine": {
+      "name": "vLLM",
+      "version": "0.17.1+bd67d66a.nvinternal.26.03.post1.48207566",
+      "fork": null,
+      "fork_url": null,
+      "config": {
+        "max_model_len": 262144,
+        "gpu_memory_utilization": 0.85,
+        "enable_prefix_caching": true
+      }
+    },
+    "model": {
+      "name": "Qwen/Qwen3.6-35B-A3B-FP8",
+      "quant": "FP8 block-128",
+      "total_params": 35000000000,
+      "active_params": 3000000000,
+      "mtp": false
+    },
+    "test": {
+      "context_size": 262144,
+      "concurrency": 1,
+      "prompt_tokens": 512,
+      "prompt_processing_speed_tps": null,
+      "token_generation_speed_tps": 21.0,
+      "note": "c=1, random dataset, --random-input-len 512 --random-output-len 256"
+    },
+    "notes": "Single-user steady-state 28-30 tok/s (real-prompt). Theoretical ceiling ~91 tok/s. NVFP4 projected ~55-60 tok/s."
+  },
+  {
+    "id": "eugr-gb10-fp8-dflash-vllm",
+    "date": "2026-05-06",
+    "source": "external",
+    "source_url": "https://github.com/ZengboJamesWang/dgx-spark-vllm-qwen3.6-35b-a3b-dflash",
+    "device": {
+      "name": "GB10 (DGX Spark)",
+      "gpu": "NVIDIA GB10 (Grace Blackwell)",
+      "compute_cap": "SM 12.1",
+      "memory_bandwidth": "273 GB/s LPDDR5x",
+      "unified_memory": "128 GB"
+    },
+    "engine": {
+      "name": "vLLM",
+      "version": null,
+      "fork": "eugr/spark-vllm-docker",
+      "fork_url": "https://github.com/eugr/spark-vllm-docker",
+      "config": {
+        "gpu_memory_utilization": 0.45,
+        "max_model_len": 262144,
+        "kv_cache_dtype": "auto"
+      }
+    },
+    "model": {
+      "name": "Qwen/Qwen3.6-35B-A3B",
+      "quant": "FP8 MoE",
+      "total_params": 35000000000,
+      "active_params": 3000000000,
+      "mtp": false
+    },
+    "test": {
+      "context_size": 262144,
+      "concurrency": 1,
+      "prompt_tokens": 512,
+      "prompt_processing_speed_tps": null,
+      "token_generation_speed_tps": 50.0,
+      "note": "DFlash speculative decoding ready (requires vLLM with DFlash support)"
+    },
+    "notes": "~50 tok/s sustained. DFlash config present but not active in this baseline."
+  },
+  {
+    "id": "jetsonhacks-gb10-qwen3-coder-30b",
+    "date": "2025-10-31",
+    "source": "external",
+    "source_url": "https://github.com/ggml-org/llama.cpp/discussions/16578",
+    "device": {
+      "name": "GB10 (DGX Spark)",
+      "gpu": "NVIDIA GB10 (Grace Blackwell)",
+      "compute_cap": "SM 12.1",
+      "memory_bandwidth": "273 GB/s LPDDR5x",
+      "unified_memory": "128 GB"
+    },
+    "engine": {
+      "name": "llama.cpp",
+      "version": "b6767 (5acd45546)",
+      "fork": null,
+      "fork_url": null,
+      "config": {
+        "flash_attn": true,
+        "batch_size": 2048,
+        "ubatch_size": 2048
+      }
+    },
+    "model": {
+      "name": "ggml-org/Qwen3-Coder-30B-A3B-Instruct-Q8_0-GGUF",
+      "quant": "Q8_0",
+      "total_params": 30530000000,
+      "active_params": 3000000000,
+      "mtp": false
+    },
+    "test": {
+      "context_size": 262144,
+      "concurrency": 1,
+      "prompt_tokens": 2048,
+      "prompt_processing_speed_tps": 2933.39,
+      "token_generation_speed_tps": 59.95,
+      "note": "llama-bench tg32, no context depth"
+    },
+    "notes": "tg32 @ d4096: 52.70, @d8192: 44.48, @d16384: 37.10, @d32768: 27.82. Context depth degrades MoE speed significantly."
+  },
+  {
+    "id": "turboquant-gb10-nemotron-q4",
+    "date": "2026-03-31",
+    "source": "external",
+    "source_url": "https://github.com/ggml-org/llama.cpp/discussions/20969#discussioncomment-16388331",
+    "device": {
+      "name": "GB10 (DGX Spark)",
+      "gpu": "NVIDIA GB10 (Grace Blackwell)",
+      "compute_cap": "SM 12.1",
+      "memory_bandwidth": "273 GB/s LPDDR5x",
+      "unified_memory": "128 GB"
+    },
+    "engine": {
+      "name": "llama.cpp",
+      "version": "build 8399",
+      "fork": null,
+      "fork_url": null,
+      "config": {}
+    },
+    "model": {
+      "name": "Nemotron-3-Nano-30B-A3B",
+      "quant": "Q4_K_XL",
+      "total_params": 30000000000,
+      "active_params": 3000000000,
+      "mtp": false
+    },
+    "test": {
+      "context_size": 128000,
+      "concurrency": 1,
+      "prompt_tokens": null,
+      "prompt_processing_speed_tps": null,
+      "token_generation_speed_tps": 45.0,
+      "note": "f16 KV cache at ~6K context"
+    },
+    "notes": "Generation throughput degrades with context depth and KV quantization: f16 @6K=44.7, q8_0 @6K=44.9, q4_0 @6K=45.0; f16 @24K=44.6, q8_0 @24K=39.7, q4_0 @24K=39.3; f16 @110K=38.0, q8_0 @110K=25.0, q4_0 @110K=24.0"
+  },
+  {
+    "id": "hackmd-3090-baseline",
+    "date": "2026-04-22",
+    "source": "external",
+    "source_url": "https://hackmd.io/ODXuOQNzSiyUITz7g9mtBw",
+    "device": {
+      "name": "RTX 3090",
+      "gpu": "NVIDIA RTX 3090",
+      "compute_cap": "SM 8.6",
+      "memory_bandwidth": "~1000 GB/s GDDR6X",
+      "unified_memory": null
+    },
+    "engine": {
+      "name": "llama.cpp",
+      "version": "97895129e (post PR #19493)",
+      "fork": null,
+      "fork_url": null,
+      "config": {
+        "ngl": 999,
+        "ctx_size": 16384,
+        "flash_attn": true,
+        "cache_type_k": "q8_0",
+        "cache_type_v": "q8_0"
+      }
+    },
+    "model": {
+      "name": "unsloth/Qwen3.6-35B-A3B-MTP-GGUF",
+      "quant": "UD-Q4_K_XL",
+      "total_params": 35000000000,
+      "active_params": 3000000000,
+      "mtp": false
+    },
+    "test": {
+      "context_size": 16384,
+      "concurrency": 1,
+      "prompt_tokens": null,
+      "prompt_processing_speed_tps": null,
+      "token_generation_speed_tps": 135.7,
+      "note": "baseline, no speculative decoding"
+    },
+    "notes": "Baseline (no spec decode) = 135.7 tok/s. All spec-decode methods lose to baseline on this hardware."
+  },
+  {
+    "id": "hackmd-3090-mtp-draft",
+    "date": "2026-04-22",
+    "source": "external",
+    "source_url": "https://hackmd.io/ODXuOQNzSiyUITz7g9mtBw",
+    "device": {
+      "name": "RTX 3090",
+      "gpu": "NVIDIA RTX 3090",
+      "compute_cap": "SM 8.6",
+      "memory_bandwidth": "~1000 GB/s GDDR6X",
+      "unified_memory": null
+    },
+    "engine": {
+      "name": "llama.cpp",
+      "version": "97895129e (post PR #19493)",
+      "fork": null,
+      "fork_url": null,
+      "config": {
+        "ngl": 999,
+        "ctx_size": 16384,
+        "flash_attn": true,
+        "cache_type_k": "q8_0",
+        "cache_type_v": "q8_0",
+        "spec_type": "draft-mtp",
+        "spec_draft_model": "unsloth/Qwen3.5-0.8B-Q4_K_M",
+        "spec_draft_n_max": 32,
+        "spec_draft_min": 2
+      }
+    },
+    "model": {
+      "name": "unsloth/Qwen3.6-35B-A3B-MTP-GGUF",
+      "quant": "UD-Q4_K_XL",
+      "total_params": 35000000000,
+      "active_params": 3000000000,
+      "mtp": true
+    },
+    "test": {
+      "context_size": 16384,
+      "concurrency": 1,
+      "prompt_tokens": null,
+      "prompt_processing_speed_tps": null,
+      "token_generation_speed_tps": 65.0,
+      "note": "Oleg --draft-min 2 --draft-max 32"
+    },
+    "notes": "MTP draft model: 65 tok/s (−54% vs baseline 139.9). 100% acceptance but verify pass pays for full expert union."
+  },
+  {
+    "id": "hackmd-3090-dflash",
+    "date": "2026-05-07",
+    "source": "external",
+    "source_url": "https://hackmd.io/ODXuOQNzSiyUITz7g9mtBw",
+    "device": {
+      "name": "RTX 3090",
+      "gpu": "NVIDIA RTX 3090",
+      "compute_cap": "SM 8.6",
+      "memory_bandwidth": "~1000 GB/s GDDR6X",
+      "unified_memory": null
+    },
+    "engine": {
+      "name": "llama.cpp",
+      "version": "post PR #22105",
+      "fork": null,
+      "fork_url": null,
+      "config": {
+        "ngl": 999,
+        "ctx_size": 16384,
+        "flash_attn": true,
+        "cache_type_k": "q8_0",
+        "cache_type_v": "q8_0",
+        "spec_type": "draft-dflash",
+        "spec_draft_max": 8
+      }
+    },
+    "model": {
+      "name": "unsloth/Qwen3.6-35B-A3B-MTP-GGUF",
+      "quant": "UD-Q4_K_XL",
+      "total_params": 35000000000,
+      "active_params": 3000000000,
+      "mtp": false
+    },
+    "test": {
+      "context_size": 16384,
+      "concurrency": 1,
+      "prompt_tokens": null,
+      "prompt_processing_speed_tps": null,
+      "token_generation_speed_tps": 77.0,
+      "note": "DFlash --draft-max=8"
+    },
+    "notes": "DFlash: 77 tok/s (−44.6% vs baseline). BF16-trained drafter conditions on FP16/BF16 target hidden states, shifts under Q4 quantization."
+  },
+  {
+    "id": "carteakey-4070-mtp-n2",
+    "date": "2026-05-12",
+    "source": "external",
+    "source_url": "https://carteakey.dev/blog/running-qwen3-6-mtp-locally/",
+    "device": {
+      "name": "RTX 4070",
+      "gpu": "NVIDIA RTX 4070",
+      "compute_cap": "SM 8.9",
+      "memory_bandwidth": "~240 GB/s GDDR6X",
+      "unified_memory": null
+    },
+    "engine": {
+      "name": "llama.cpp",
+      "version": "mainline (post PR #19493 merge)",
+      "fork": null,
+      "fork_url": null,
+      "config": {
+        "flash_attn": true,
+        "batch_size": 1024,
+        "ubatch_size": 512,
+        "threads": 10,
+        "threads_batch": 12,
+        "no_mmap": true,
+        "mlock": true,
+        "parallel": 1,
+        "prio": 2,
+        "no_warmup": true,
+        "spec_type": "draft-mtp",
+        "spec_draft_n_max": 2,
+        "cache_type_k": "q8_0",
+        "cache_type_v": "q8_0",
+        "ctx_size": 131072,
+        "preserve_thinking": true
+      }
+    },
+    "model": {
+      "name": "unsloth/Qwen3.6-35B-A3B-MTP-GGUF",
+      "quant": "UD-Q4_K_XL",
+      "total_params": 35000000000,
+      "active_params": 3000000000,
+      "mtp": true
+    },
+    "test": {
+      "context_size": 131072,
+      "concurrency": 1,
+      "prompt_tokens": null,
+      "prompt_processing_speed_tps": null,
+      "token_generation_speed_tps": 75.1,
+      "note": "MTP n=2, Code (C++) task, 100% acceptance"
+    },
+    "notes": "MTP n=2: 65-75 tok/s vs baseline ~51 tok/s (+28 to +47%). n=2 is sweet spot; n=3+ drops due to draft overhead. Server-realistic: ~67 tok/s @ 128K context."
+  },
+  {
+    "id": "allenkuo-blackwell-nvfp4-mtp",
+    "date": "2026-05-15",
+    "source": "external",
+    "source_url": "https://allenkuo.medium.com/when-speculative-decoding-helps-local-llms-and-when-it-doesnt-5c41dd804e4b",
+    "device": {
+      "name": "RTX PRO 6000 Blackwell",
+      "gpu": "NVIDIA RTX PRO 6000 (Blackwell)",
+      "compute_cap": "SM 12.1",
+      "memory_bandwidth": "TBD",
+      "unified_memory": null
+    },
+    "engine": {
+      "name": "vLLM",
+      "version": "0.20.2",
+      "fork": null,
+      "fork_url": null,
+      "config": {
+        "gpu_memory_utilization": 0.7,
+        "flashinfer": "0.6.7"
+      }
+    },
+    "model": {
+      "name": "Qwen3.6-27B (dense sibling)",
+      "quant": "NVFP4",
+      "total_params": 27000000000,
+      "active_params": 27000000000,
+      "mtp": false
+    },
+    "test": {
+      "context_size": null,
+      "concurrency": 4,
+      "prompt_tokens": null,
+      "prompt_processing_speed_tps": null,
+      "token_generation_speed_tps": 162.2,
+      "note": "c=4, NVFP4, no drafter"
+    },
+    "notes": "MTP net win condition: concurrency ≥ 4 ∧ nspec ≥ 3 ∧ accept ≥ 80% ∧ base decode not too fast. Single-stream MTP loses on Qwen 3.6 due to GDN layers not parallelizing during speculative verify."
+  },
+  {
+    "id": "yunusshin-gb10-qwen35-optimized",
+    "date": "2026-04-12",
+    "source": "external",
+    "source_url": "https://github.com/yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized",
+    "device": {
+      "name": "GB10 (DGX Spark)",
+      "gpu": "NVIDIA GB10 (Grace Blackwell)",
+      "compute_cap": "SM 12.1",
+      "memory_bandwidth": "273 GB/s LPDDR5x",
+      "unified_memory": "128 GB"
+    },
+    "engine": {
+      "name": "vLLM",
+      "version": null,
+      "fork": "yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized",
+      "fork_url": "https://github.com/yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized",
+      "config": {}
+    },
+    "model": {
+      "name": "Qwen3.5-35B-A3B",
+      "quant": null,
+      "total_params": 35000000000,
+      "active_params": 3000000000,
+      "mtp": false
+    },
+    "test": {
+      "context_size": null,
+      "concurrency": 1,
+      "prompt_tokens": null,
+      "prompt_processing_speed_tps": null,
+      "token_generation_speed_tps": 115.0,
+      "note": "64 → 113-115 tok/s (+77%) with optimizations"
+    },
+    "notes": "Port of albond's v2 optimizations from Qwen3.5-122B down to 35B. Model is Qwen3.5 (not 3.6)."
+  }
+]
