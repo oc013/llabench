@@ -619,5 +619,50 @@
       "note": "Slot 1 (subagent), MTP enabled"
     },
     "notes": "Second benchmark run. Slightly lower avg tokens per run."
+  },
+  {
+    "id": "aeon-7-gb10-dflash-v4",
+    "date": "2026-05-10",
+    "source": "external",
+    "source_url": "https://github.com/AEON-7/Qwen3.6-27B-AEON-Ultimate-Uncensored-DFlash",
+    "device": {
+      "name": "GB10 (DGX Spark)",
+      "gpu": "NVIDIA GB10 (Grace Blackwell)",
+      "compute_cap": "SM 12.1",
+      "memory_bandwidth": "273 GB/s LPDDR5x",
+      "unified_memory": "128 GB"
+    },
+    "engine": {
+      "name": "vLLM",
+      "version": "0.20.2rc1.dev166+gf6490a284 (AEON v4 DFlash)",
+      "fork": "AEON-7/vllm-aeon-ultimate-dflash",
+      "fork_url": "https://github.com/AEON-7/Qwen3.6-27B-AEON-Ultimate-Uncensored-DFlash",
+      "config": {
+        "attention_backend": "flashinfer 0.6.11",
+        "speculative_algorithm": "DFlash",
+        "spec_draft_k": 15,
+        "draft_model": "z-lab/Qwen3.6-27B-DFlash",
+        "cuda_graphs": true,
+        "gpu_memory_utilization": 0.75,
+        "max_model_len": 256000,
+        "nvfp4_gemm_backend": "flashinfer-cutlass"
+      }
+    },
+    "model": {
+      "name": "AEON-7/Qwen3.6-27B-AEON-Ultimate-Uncensored-NVFP4",
+      "quant": "NVFP4",
+      "total_params": 27000000000,
+      "active_params": 27000000000,
+      "mtp": false
+    },
+    "test": {
+      "context_size": 248,
+      "concurrency": 1,
+      "prompt_tokens": 48,
+      "prompt_processing_speed_tps": null,
+      "token_generation_speed_tps": 37.56,
+      "note": "Avg c=1 decode across 6 categories (coding/math/reasoning/prose/natural_language/extraction_json). Trimmed median, 16 samples each, 200 output tokens. Raw baseline: 10.49 tok/s (+258%)."
+    },
+    "notes": "Lossless abliteration (KL=0.000492) + NVFP4 hardware quantization + DFlash k=15 spec decode on GB10. 0/100 refusals. Not MTP — uses external DFlash drafter."
   }
 ]
