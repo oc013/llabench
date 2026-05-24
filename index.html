@@ -243,6 +243,34 @@ let benchmarks = [];
 let sortCol = 'date';
 let sortDir = -1; // -1 = desc, 1 = asc
 
+function normalizeModel(name) {
+  // Strip variant suffixes: keep only base model identifier
+  const parts = name.split('-');
+  // Base pattern: Qwen3.6-35B-A3B or Qwen3.6-27B etc.
+  // Find the last part that looks like a model size/variant (digit+letter combo)
+  let idx = parts.length;
+  for (let i = parts.length - 1; i >= 0; i--) {
+    if (/^\d+[A-Z]/.test(parts[i])) {
+      idx = i + 1;
+      break;
+    }
+  }
+  return parts.slice(0, idx).join('-');
+}
+
+function normalizeQuant(q) {
+  if (!q) return '';
+  const map = {
+    'NVFP4 Experts-Only': 'NVFP4',
+    'NVFP4': 'NVFP4',
+    'INT4': 'INT4',
+    'Q8_0': 'Q8_0',
+    'FP8': 'FP8',
+    'BF16': 'BF16',
+  };
+  return map[q] || q;
+}
+
 async function init() {
   const sources = ['data/benchmarks.json', 'results/gb10_mtp_slot1.json'];
   benchmarks = [];
@@ -261,6 +289,12 @@ async function init() {
       console.warn(`Skipped ${src}:`, e.message);
     }
   }
+
+  // Attach normalized keys for filtering
+  benchmarks.forEach(b => {
+    b._normModel = normalizeModel(b.model.name || '');
+    b._normQuant = normalizeQuant(b.model.quant || '');
+  });
 
   if (benchmarks.length === 0) {
     document.getElementById('bench-body').innerHTML = '<tr><td colspan="8" class="empty">No benchmark data found.</td></tr>';
@@ -287,10 +321,10 @@ async function init() {
 }
 
 function populateFilters() {
-  const models = [...new Set(benchmarks.map(b => b.model.name))].sort();
+  const models = [...new Set(benchmarks.map(b => b._normModel))].sort();
   const devices = [...new Set(benchmarks.map(b => b.device.name))].sort();
   const engines = [...new Set(benchmarks.map(b => b.engine.name))].sort();
-  const quants = [...new Set(benchmarks.map(b => b.model.quant).filter(Boolean))].sort();
+  const quants = [...new Set(benchmarks.map(b => b._normQuant).filter(Boolean))].sort();
   const sources = [...new Set(benchmarks.map(b => b.source))].sort();
 
   ['filter-model', 'filter-device', 'filter-engine', 'filter-quant', 'filter-source'].forEach(id => {
@@ -335,10 +369,10 @@ function getFiltered() {
   const source = document.getElementById('filter-source').value;
 
   return benchmarks.filter(b => {
-    if (model && b.model.name !== model) return false;
+    if (model && b._normModel !== model) return false;
     if (device && b.device.name !== device) return false;
     if (engine && b.engine.name !== engine) return false;
-    if (quant && b.model.quant !== quant) return false;
+    if (quant && b._normQuant !== quant) return false;
     if (mtp && String(b.model.mtp) !== mtp) return false;
     if (source && b.source !== source) return false;
     if (search) {
