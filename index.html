@@ -316,14 +316,37 @@ async function init() {
   updateStats();
   renderTable();
 
+  // Restore saved filter state
+  const saved = localStorage.getItem('llabench-filters');
+  if (saved) {
+    try {
+      const state = JSON.parse(saved);
+      Object.keys(state).forEach(id => {
+        const el = document.getElementById(id);
+        if (el && state[id]) el.value = state[id];
+      });
+    } catch(e) {}
+  }
+
   // Event listeners
   document.getElementById('search').addEventListener('input', renderTable);
-  document.getElementById('filter-model').addEventListener('change', renderTable);
-  document.getElementById('filter-device').addEventListener('change', renderTable);
-  document.getElementById('filter-engine').addEventListener('change', renderTable);
-  document.getElementById('filter-quant').addEventListener('change', renderTable);
-  document.getElementById('filter-mtp').addEventListener('change', renderTable);
-  document.getElementById('filter-source').addEventListener('change', renderTable);
+  ['filter-model', 'filter-device', 'filter-engine', 'filter-quant', 'filter-mtp', 'filter-source'].forEach(id => {
+    document.getElementById(id).addEventListener('change', renderTable);
+  });
+
+  // Save filters on any change
+  function saveFilters() {
+    const state = {};
+    ['search', 'filter-model', 'filter-device', 'filter-engine', 'filter-quant', 'filter-mtp', 'filter-source'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.value) state[id] = el.value;
+    });
+    localStorage.setItem('llabench-filters', JSON.stringify(state));
+  }
+  document.querySelectorAll('.filters input, .filters select').forEach(el => {
+    el.addEventListener('input', saveFilters);
+    el.addEventListener('change', saveFilters);
+  });
 
   // Close modal on overlay click
   document.getElementById('modal-overlay').addEventListener('click', (e) => {
