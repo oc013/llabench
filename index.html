@@ -240,7 +240,7 @@
 
 <script>
 let benchmarks = [];
-let sortCol = 'date';
+let sortCol = 'test.token_generation_speed_tps';
 let sortDir = -1; // -1 = desc, 1 = asc
 
 function normalizeModel(name) {
@@ -314,6 +314,17 @@ async function init() {
 
   populateFilters();
   updateStats();
+
+  // Restore sort header styling
+  if (sortCol) {
+    const activeTh = document.querySelector(`th[data-col="${sortCol}"]`);
+    if (activeTh) {
+      activeTh.classList.add(sortDir === -1 ? 'sorted-desc' : 'sorted-asc');
+      const arrow = activeTh.querySelector('.sort-arrow');
+      if (arrow) arrow.textContent = sortDir === -1 ? '↓' : '↑';
+    }
+  }
+
   renderTable();
 
   // Restore saved filter state
@@ -325,6 +336,9 @@ async function init() {
         const el = document.getElementById(id);
         if (el && state[id]) el.value = state[id];
       });
+      // Restore sort state
+      if (state.sortCol) sortCol = state.sortCol;
+      if (state.sortDir) sortDir = parseInt(state.sortDir);
     } catch(e) {}
   }
 
@@ -334,9 +348,9 @@ async function init() {
     document.getElementById(id).addEventListener('change', renderTable);
   });
 
-  // Save filters on any change
-  function saveFilters() {
-    const state = {};
+  // Save filters + sort on any change
+  function saveState() {
+    const state = { sortCol, sortDir };
     ['search', 'filter-model', 'filter-device', 'filter-engine', 'filter-quant', 'filter-mtp', 'filter-source'].forEach(id => {
       const el = document.getElementById(id);
       if (el && el.value) state[id] = el.value;
@@ -344,8 +358,8 @@ async function init() {
     localStorage.setItem('llabench-filters', JSON.stringify(state));
   }
   document.querySelectorAll('.filters input, .filters select').forEach(el => {
-    el.addEventListener('input', saveFilters);
-    el.addEventListener('change', saveFilters);
+    el.addEventListener('input', saveState);
+    el.addEventListener('change', saveState);
   });
 
   // Close modal on overlay click
@@ -439,6 +453,7 @@ function sortTable(col) {
   }
 
   renderTable();
+  saveState();
 }
 
 function getNested(obj, path) {
