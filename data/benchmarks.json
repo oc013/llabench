@@ -204,7 +204,7 @@
       "token_generation_speed_tps": 65.0,
       "note": "Oleg --draft-min 2 --draft-max 32"
     },
-    "notes": "MTP draft model: 65 tok/s (−54% vs baseline 139.9). 100% acceptance but verify pass pays for full expert union.",
+    "notes": "MTP draft model: 65 tok/s (\u221254% vs baseline 139.9). 100% acceptance but verify pass pays for full expert union.",
     "hardware_id": "rtx-3090"
   },
   {
@@ -242,7 +242,7 @@
       "token_generation_speed_tps": 77.0,
       "note": "DFlash --draft-max=8"
     },
-    "notes": "DFlash: 77 tok/s (−44.6% vs baseline). BF16-trained drafter conditions on FP16/BF16 target hidden states, shifts under Q4 quantization.",
+    "notes": "DFlash: 77 tok/s (\u221244.6% vs baseline). BF16-trained drafter conditions on FP16/BF16 target hidden states, shifts under Q4 quantization.",
     "hardware_id": "rtx-3090"
   },
   {
@@ -277,7 +277,7 @@
       "prompt_tokens": 512,
       "prompt_processing_speed_tps": null,
       "token_generation_speed_tps": 64.1,
-      "note": "Baseline: Intel INT4 AutoRound + FlashInfer, bench_qwen35.sh (5 prompts × 2 runs, temp=0.0, --random-input-len 512 --random-output-len 256). Max context supported: 262144."
+      "note": "Baseline: Intel INT4 AutoRound + FlashInfer, bench_qwen35.sh (5 prompts \u00d7 2 runs, temp=0.0, --random-input-len 512 --random-output-len 256). Max context supported: 262144."
     },
     "notes": "Baseline before optimizations. Uses eugr/spark-vllm-docker base image.",
     "hardware_id": "gb10-spark"
@@ -315,9 +315,9 @@
       "prompt_tokens": 512,
       "prompt_processing_speed_tps": null,
       "token_generation_speed_tps": 82.8,
-      "note": "+ INT8 LM Head v2: runtime per-channel INT8 quantization of 248K×2048 logits layer. bench_qwen35.sh (5 prompts × 2 runs, temp=0.0)."
+      "note": "+ INT8 LM Head v2: runtime per-channel INT8 quantization of 248K\u00d72048 logits layer. bench_qwen35.sh (5 prompts \u00d7 2 runs, temp=0.0)."
     },
-    "notes": "INT8 LM Head patch applied dynamically at startup (model-agnostic, activates for any lm_head.dtype ∈ {bf16, fp16} with vocab_size > 100000). +29% gain.",
+    "notes": "INT8 LM Head patch applied dynamically at startup (model-agnostic, activates for any lm_head.dtype \u2208 {bf16, fp16} with vocab_size > 100000). +29% gain.",
     "hardware_id": "gb10-spark"
   },
   {
@@ -353,7 +353,7 @@
       "prompt_tokens": 512,
       "prompt_processing_speed_tps": null,
       "token_generation_speed_tps": 112.8,
-      "note": "MTP-2 speculative decoding (recommended config), peak 125.3 tok/s. bench_qwen35.sh (5 prompts × 2 runs, temp=0.0)."
+      "note": "MTP-2 speculative decoding (recommended config), peak 125.3 tok/s. bench_qwen35.sh (5 prompts \u00d7 2 runs, temp=0.0)."
     },
     "notes": "Qwen3.5-35B ships with native 785-tensor MTP head. Critical bug fix: build-hybrid-checkpoint.py strips MTP weights from model_extra_tensors.safetensors (2329 tensors), use add-mtp-weights.py after rebuild. Draft acceptance: code 92-98%, JSON 92-95%, math 80-85%, prose 78-90%.",
     "hardware_id": "gb10-spark"
@@ -392,7 +392,7 @@
       "prompt_tokens": 512,
       "prompt_processing_speed_tps": null,
       "token_generation_speed_tps": 114.8,
-      "note": "Optional hybrid: replaces BF16 shared-expert MLPs with FP8 from Qwen official FP8 checkpoint. bench_qwen35.sh (5 prompts × 2 runs, temp=0.0)."
+      "note": "Optional hybrid: replaces BF16 shared-expert MLPs with FP8 from Qwen official FP8 checkpoint. bench_qwen35.sh (5 prompts \u00d7 2 runs, temp=0.0)."
     },
     "notes": "+1.8% over MTP-2 alone (marginal on 35B vs +9% on 122B). CUTLASS FP8 block-128 kernels have fixed per-launch overhead; shared-expert matrices only 512-wide on 35B = little to amortize. Skip --hybrid on 35B: +25 min build, +35 GB disk, +20 GB checkpoint for <2 tok/s.",
     "hardware_id": "gb10-spark"
@@ -431,7 +431,7 @@
       "token_generation_speed_tps": 61.49,
       "note": "c=1: 61.49 tok/s, c=2: 97.87 tok/s aggregate, c=4: 174.69 tok/s aggregate. Single long decode: 57.49 tok/s (512 tokens in 8.91s). MTP accept rate ~0.93 mean, accept length ~1.87/2."
     },
-    "notes": "SGLang native MTP on GB10 NVFP4. Includes patches/qwen3_5.py loader fix for compressed-tensors GDN linear-attention projections. No external DFlash draft — uses built-in model_mtp.safetensors from checkpoint.",
+    "notes": "SGLang native MTP on GB10 NVFP4. Includes patches/qwen3_5.py loader fix for compressed-tensors GDN linear-attention projections. No external DFlash draft \u2014 uses built-in model_mtp.safetensors from checkpoint.",
     "hardware_id": "gb10-spark"
   },
   {
@@ -572,7 +572,7 @@
       "token_generation_speed_tps": 37.56,
       "note": "Avg c=1 decode across 6 categories (coding/math/reasoning/prose/natural_language/extraction_json). Trimmed median, 16 samples each, 200 output tokens. Raw baseline: 10.49 tok/s (+258%)."
     },
-    "notes": "Lossless abliteration (KL=0.000492) + NVFP4 hardware quantization + DFlash k=15 spec decode on GB10. 0/100 refusals. Not MTP — uses external DFlash drafter.",
+    "notes": "Lossless abliteration (KL=0.000492) + NVFP4 hardware quantization + DFlash k=15 spec decode on GB10. 0/100 refusals. Not MTP \u2014 uses external DFlash drafter.",
     "hardware_id": "gb10-spark"
   },
   {
@@ -720,5 +720,210 @@
       "note": "Qwen3-Next-80B-A3B-NVFP4 on GB10/vLLM. FlashInfer compiled with CUDA arch 12.1f (not 12.0f). Peak: 36 tok/s. FP8 version of same model: 44 t/s (NVFP4 slower than FP8 at time of test)."
     },
     "notes": "Key finding: NVFP4 on GB10 was bottlenecked by FlashInfer compilation (needed 12.1f). Even with fix, NVFP4 (35 tok/s) was slower than FP8 (44 tok/s) for Qwen3-Next-80B. Cutlass fallback used for NVFP4 GEMM."
+  },
+  {
+    "id": "aeon-7-gb10-heretic-dflash-k15",
+    "date": "2026-04-20",
+    "source": "external",
+    "source_url": "https://github.com/AEON-7/Qwen3.6-NVFP4-DFlash",
+    "hardware_id": "gb10-spark",
+    "engine": {
+      "name": "vLLM",
+      "version": "HEAD (sm_120 build)",
+      "fork": "AEON-7/vllm-spark-omni-q36",
+      "fork_url": "https://github.com/AEON-7/Qwen3.6-NVFP4-DFlash",
+      "config": {
+        "max_num_seqs": 128,
+        "max_model_len": 262144,
+        "max_num_batched_tokens": 65536,
+        "dflash_k": 15,
+        "enable_thinking": false
+      }
+    },
+    "model": {
+      "name": "AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4",
+      "quant": "NVFP4",
+      "total_params": 35000000000.0,
+      "active_params": 3000000000.0,
+      "mtp": false
+    },
+    "test": {
+      "context_size": 200,
+      "concurrency": 1,
+      "prompt_tokens": null,
+      "token_generation_speed_tps": 83.9,
+      "note": "Single-stream median (T=0 greedy, 10 trials). p95: 127.5, min: 41.1. Mixed-domain prompts."
+    },
+    "notes": "DFlash spec decode k=15 (not MTP). Drafter: z-lab/Qwen3.6-35B-A3B-DFlash (~905MB). Acceptance: 62-78% pos-0, 2.7-4.4 mean accepted tokens per target step. Throughput plateaus ~313 tok/s from c=64 (GB10 compute wall on 3B-active MoE + linear-attn layers + DFlash overhead). Zero errors across 1,200+ requests."
+  },
+  {
+    "id": "aeon-7-gb10-heretic-dflash-k15-c1",
+    "date": "2026-04-20",
+    "source": "external",
+    "source_url": "https://github.com/AEON-7/Qwen3.6-NVFP4-DFlash",
+    "hardware_id": "gb10-spark",
+    "engine": {
+      "name": "vLLM",
+      "version": "HEAD (sm_120 build)",
+      "fork": "AEON-7/vllm-spark-omni-q36",
+      "fork_url": "https://github.com/AEON-7/Qwen3.6-NVFP4-DFlash",
+      "config": {
+        "max_num_seqs": 128,
+        "max_model_len": 262144,
+        "max_num_batched_tokens": 65536,
+        "dflash_k": 15,
+        "enable_thinking": false
+      }
+    },
+    "model": {
+      "name": "AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4",
+      "quant": "NVFP4",
+      "total_params": 35000000000.0,
+      "active_params": 3000000000.0,
+      "mtp": false
+    },
+    "test": {
+      "context_size": 200,
+      "prompt_tokens": null,
+      "concurrency": 1,
+      "token_generation_speed_tps": 102.9,
+      "note": "Concurrent aggregate (T=0.7 stochastic, 200-tok output, median of 3 runs). Per-req p50: 109.1 tok/s."
+    }
+  },
+  {
+    "id": "aeon-7-gb10-heretic-dflash-k15-c4",
+    "date": "2026-04-20",
+    "source": "external",
+    "source_url": "https://github.com/AEON-7/Qwen3.6-NVFP4-DFlash",
+    "hardware_id": "gb10-spark",
+    "engine": {
+      "name": "vLLM",
+      "version": "HEAD (sm_120 build)",
+      "fork": "AEON-7/vllm-spark-omni-q36",
+      "fork_url": "https://github.com/AEON-7/Qwen3.6-NVFP4-DFlash",
+      "config": {
+        "max_num_seqs": 128,
+        "max_model_len": 262144,
+        "max_num_batched_tokens": 65536,
+        "dflash_k": 15,
+        "enable_thinking": false
+      }
+    },
+    "model": {
+      "name": "AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4",
+      "quant": "NVFP4",
+      "total_params": 35000000000.0,
+      "active_params": 3000000000.0,
+      "mtp": false
+    },
+    "test": {
+      "context_size": 200,
+      "prompt_tokens": null,
+      "concurrency": 4,
+      "token_generation_speed_tps": 128.1,
+      "note": "Per-req p50: 48.5 tok/s. TTFT p50: 191ms."
+    }
+  },
+  {
+    "id": "aeon-7-gb10-heretic-dflash-k15-c16",
+    "date": "2026-04-20",
+    "source": "external",
+    "source_url": "https://github.com/AEON-7/Qwen3.6-NVFP4-DFlash",
+    "hardware_id": "gb10-spark",
+    "engine": {
+      "name": "vLLM",
+      "version": "HEAD (sm_120 build)",
+      "fork": "AEON-7/vllm-spark-omni-q36",
+      "fork_url": "https://github.com/AEON-7/Qwen3.6-NVFP4-DFlash",
+      "config": {
+        "max_num_seqs": 128,
+        "max_model_len": 262144,
+        "max_num_batched_tokens": 65536,
+        "dflash_k": 15,
+        "enable_thinking": false
+      }
+    },
+    "model": {
+      "name": "AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4",
+      "quant": "NVFP4",
+      "total_params": 35000000000.0,
+      "active_params": 3000000000.0,
+      "mtp": false
+    },
+    "test": {
+      "context_size": 200,
+      "prompt_tokens": null,
+      "concurrency": 16,
+      "token_generation_speed_tps": 227.6,
+      "note": "Per-req p50: 19.3 tok/s. TTFT p50: 501ms."
+    }
+  },
+  {
+    "id": "aeon-7-gb10-heretic-dflash-k15-c64",
+    "date": "2026-04-20",
+    "source": "external",
+    "source_url": "https://github.com/AEON-7/Qwen3.6-NVFP4-DFlash",
+    "hardware_id": "gb10-spark",
+    "engine": {
+      "name": "vLLM",
+      "version": "HEAD (sm_120 build)",
+      "fork": "AEON-7/vllm-spark-omni-q36",
+      "fork_url": "https://github.com/AEON-7/Qwen3.6-NVFP4-DFlash",
+      "config": {
+        "max_num_seqs": 128,
+        "max_model_len": 262144,
+        "max_num_batched_tokens": 65536,
+        "dflash_k": 15,
+        "enable_thinking": false
+      }
+    },
+    "model": {
+      "name": "AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4",
+      "quant": "NVFP4",
+      "total_params": 35000000000.0,
+      "active_params": 3000000000.0,
+      "mtp": false
+    },
+    "test": {
+      "context_size": 200,
+      "prompt_tokens": null,
+      "concurrency": 64,
+      "token_generation_speed_tps": 310.8,
+      "note": "Per-req p50: 6.9 tok/s. TTFT p95: 11.2s. Throughput plateau begins."
+    }
+  },
+  {
+    "id": "aeon-7-gb10-heretic-dflash-k15-c128",
+    "date": "2026-04-20",
+    "source": "external",
+    "source_url": "https://github.com/AEON-7/Qwen3.6-NVFP4-DFlash",
+    "hardware_id": "gb10-spark",
+    "engine": {
+      "name": "vLLM",
+      "version": "HEAD (sm_120 build)",
+      "fork": "AEON-7/vllm-spark-omni-q36",
+      "fork_url": "https://github.com/AEON-7/Qwen3.6-NVFP4-DFlash",
+      "config": {
+        "max_num_seqs": 128,
+        "max_model_len": 262144,
+        "max_num_batched_tokens": 65536,
+        "dflash_k": 15,
+        "enable_thinking": false
+      }
+    },
+    "model": {
+      "name": "AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4",
+      "quant": "NVFP4",
+      "total_params": 35000000000.0,
+      "active_params": 3000000000.0,
+      "mtp": false
+    },
+    "test": {
+      "context_size": 200,
+      "prompt_tokens": null,
+      "concurrency": 128,
+      "token_generation_speed_tps": 313.6,
+      "note": "Per-req p50: 6.5 tok/s. TTFT p95: 46.7s. Aggregate max ~313 tok/s."
+    }
   }
 ]
