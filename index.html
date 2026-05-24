@@ -395,7 +395,7 @@ function renderTable() {
     const aVal = getNested(a, sortCol);
     const bVal = getNested(b, sortCol);
     if (sortCol === 'test.token_generation_speed_tps') {
-      return (aVal || 0 - (bVal || 0)) * sortDir;
+      return ((aVal || 0) - (bVal || 0)) * sortDir;
     }
     if (typeof aVal === 'number' && typeof bVal === 'number') {
       return (aVal - bVal) * sortDir;
