@@ -315,18 +315,6 @@ async function init() {
   populateFilters();
   updateStats();
 
-  // Restore sort header styling
-  if (sortCol) {
-    const activeTh = document.querySelector(`th[data-col="${sortCol}"]`);
-    if (activeTh) {
-      activeTh.classList.add(sortDir === -1 ? 'sorted-desc' : 'sorted-asc');
-      const arrow = activeTh.querySelector('.sort-arrow');
-      if (arrow) arrow.textContent = sortDir === -1 ? '↓' : '↑';
-    }
-  }
-
-  renderTable();
-
   // Restore saved filter state
   const saved = localStorage.getItem('llabench-filters');
   if (saved) {
@@ -341,6 +329,18 @@ async function init() {
       if (state.sortDir) sortDir = parseInt(state.sortDir);
     } catch(e) {}
   }
+
+  // Restore sort header styling
+  if (sortCol) {
+    const activeTh = document.querySelector(`th[data-col="${sortCol}"]`);
+    if (activeTh) {
+      activeTh.classList.add(sortDir === -1 ? 'sorted-desc' : 'sorted-asc');
+      const arrow = activeTh.querySelector('.sort-arrow');
+      if (arrow) arrow.textContent = sortDir === -1 ? '↓' : '↑';
+    }
+  }
+
+  renderTable();
 
   // Event listeners
   document.getElementById('search').addEventListener('input', renderTable);
