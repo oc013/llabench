@@ -44,10 +44,10 @@
       "active_params": 3000000000,
       "mtp": true
     },
-    "test": {
-"context_size": 2820,
+       "test": {
+            "context_size": 90,
             "concurrency": 1,
-            "prompt_tokens": 512,
+            "prompt_tokens": 90,
             "prompt_processing_speed_tps": null,
             "token_generation_speed_tps": 54.0,
             "avg_completion_tokens": 2308,
@@ -101,10 +101,10 @@
       "active_params": 3000000000,
       "mtp": true
     },
-    "test": {
-"context_size": 2506,
+      "test": {
+            "context_size": 90,
             "concurrency": 1,
-            "prompt_tokens": 512,
+            "prompt_tokens": 90,
             "prompt_processing_speed_tps": null,
             "token_generation_speed_tps": 53.0,
             "avg_completion_tokens": 1994,
