@@ -341,45 +341,6 @@
     "notes": "MTP n=2: 65-75 tok/s vs baseline ~51 tok/s (+28 to +47%). n=2 is sweet spot; n=3+ drops due to draft overhead. Server-realistic: ~67 tok/s @ 128K context."
   },
   {
-    "id": "allenkuo-blackwell-nvfp4-mtp",
-    "date": "2026-05-15",
-    "source": "external",
-    "source_url": "https://allenkuo.medium.com/when-speculative-decoding-helps-local-llms-and-when-it-doesnt-5c41dd804e4b",
-    "device": {
-      "name": "RTX PRO 6000 Blackwell",
-      "gpu": "NVIDIA RTX PRO 6000 (Blackwell)",
-      "compute_cap": "SM 12.1",
-      "memory_bandwidth": "TBD",
-      "unified_memory": null
-    },
-    "engine": {
-      "name": "vLLM",
-      "version": "0.20.2",
-      "fork": null,
-      "fork_url": null,
-      "config": {
-        "gpu_memory_utilization": 0.7,
-        "flashinfer": "0.6.7"
-      }
-    },
-    "model": {
-      "name": "Qwen3.6-27B (dense sibling)",
-      "quant": "NVFP4",
-      "total_params": 27000000000,
-      "active_params": 27000000000,
-      "mtp": false
-    },
-    "test": {
-      "context_size": null,
-      "concurrency": 4,
-      "prompt_tokens": null,
-      "prompt_processing_speed_tps": null,
-      "token_generation_speed_tps": 162.2,
-      "note": "c=4, NVFP4, no drafter. Context size not specified in source."
-    },
-    "notes": "MTP net win condition: concurrency ≥ 4 ∧ nspec ≥ 3 ∧ accept ≥ 80% ∧ base decode not too fast. Single-stream MTP loses on Qwen 3.6 due to GDN layers not parallelizing during speculative verify."
-  },
-  {
     "id": "yunusshin-gb10-qwen35-baseline",
     "date": "2026-04-12",
     "source": "external",
