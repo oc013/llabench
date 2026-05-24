@@ -664,9 +664,6 @@
         "moe_backend": "triton",
         "kv_cache_dtype": "fp8_e4m3",
         "gpu_memory_utilization": 0.45,
-        "max_model_len": 131072,
-        "max_num_seqs": 32,
-        "max_num_batched_tokens": 16384,
         "speculative_algorithm": "mtp",
         "spec_draft_n_max": 2
       }
@@ -679,13 +676,13 @@
       "mtp": true
     },
     "test": {
-      "context_size": null,
-      "concurrency": null,
-      "prompt_tokens": null,
+      "context_size": 1024,
+      "concurrency": 1,
+      "prompt_tokens": 512,
       "prompt_processing_speed_tps": null,
-      "token_generation_speed_tps": null,
-      "note": "4-scenario benchmark suite on Qwen3.6-35B-A3B-FP8 + MTP k=2 on GB10/vLLM.\nA: single decode (512in/512out): vanilla 50.51 -> +MTP 54.92 tok/s (+8.7%)\nB: prefill-bound (8192in/256out, c=4): 73.98 -> 68.68 tok/s (-7.2%), TTFT -39%\nC: concurrent stress (2048in/512out, c=16): 214.28 -> 266.25 tok/s (+24.2%), TTFT -56.7%\nD: chat profile (2048in/256out, c=2): 73.88 -> 77.60 tok/s (+5.0%), TTFT -30%\nGlobal MTP acceptance rate: 72.53%. Key insight: GB10 unified memory makes spec decoding disproportionately useful at high concurrency."
+      "token_generation_speed_tps": 54.92,
+      "note": "Single decode, 512 input / 512 output. Vanilla: 50.51 tok/s (+8.7%). MTP acceptance rate: 71.63%."
     },
-    "notes": "DocAI benchmark. MTP +24% at c=16 on GB10 where H100 would be neutral/negative — GB10 is memory-bandwidth-bound at high concurrency, MTP fills unused compute."
+    "notes": "DocAI benchmark on GB10/vLLM. Global acceptance rate across all tests: 72.53%."
   }
 ]
