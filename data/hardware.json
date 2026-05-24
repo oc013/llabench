@@ -1,0 +1,18 @@
+[
+  {
+    "id": "gb10-spark",
+    "name": "GB10 (DGX Spark)",
+    "gpu": "NVIDIA GB10 (Grace Blackwell)",
+    "compute_cap": "SM 12.1",
+    "memory_bandwidth": "273 GB/s LPDDR5x",
+    "unified_memory": "128 GB"
+  },
+  {
+    "id": "rtx-3090",
+    "name": "RTX 3090",
+    "gpu": "NVIDIA RTX 3090",
+    "compute_cap": "SM 8.6",
+    "memory_bandwidth": "~1000 GB/s GDDR6X",
+    "unified_memory": null
+  }
+]

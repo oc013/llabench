@@ -270,26 +270,39 @@ function normalizeQuant(q) {
 }
 
 async function init() {
-  const sources = ['data/benchmarks.json'];
+  const sources = ['data/benchmarks.json', 'data/hardware.json'];
   benchmarks = [];
+  let hardwareMap = {};
 
   for (const src of sources) {
     try {
       const res = await fetch(src);
       const data = await res.json();
-      // Handle both single object and array
-      if (Array.isArray(data)) {
-        benchmarks.push(...data);
+      if (src.includes('hardware')) {
+        // Build hardware lookup map
+        if (Array.isArray(data)) {
+          data.forEach(h => { hardwareMap[h.id] = h; });
+        } else {
+          hardwareMap[data.id] = data;
+        }
       } else {
-        benchmarks.push(data);
+        // Handle both single object and array
+        if (Array.isArray(data)) {
+          benchmarks.push(...data);
+        } else {
+          benchmarks.push(data);
+        }
       }
     } catch(e) {
       console.warn(`Skipped ${src}:`, e.message);
     }
   }
 
-  // Attach normalized keys for filtering
+  // Resolve hardware_id → device object
   benchmarks.forEach(b => {
+    if (b.hardware_id && hardwareMap[b.hardware_id]) {
+      b.device = hardwareMap[b.hardware_id];
+    }
     b._normModel = normalizeModel(b.model.name || '');
     b._normQuant = normalizeQuant(b.model.quant || '');
   });

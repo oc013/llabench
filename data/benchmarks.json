@@ -4,13 +4,6 @@
     "date": "2026-04-23",
     "source": "external",
     "source_url": "https://rikkarth.com/blog/2026-04-23-benchmark-results-for-qwen-qwen3-6-35b-a3b-fp8-nvidia-dgx-spark-gb10-serving-via-vllm",
-    "device": {
-      "name": "GB10 (DGX Spark)",
-      "gpu": "NVIDIA GB10 (Grace Blackwell)",
-      "compute_cap": "SM 12.1",
-      "memory_bandwidth": "273 GB/s LPDDR5x",
-      "unified_memory": "128 GB"
-    },
     "engine": {
       "name": "vLLM",
       "version": "0.17.1+bd67d66a.nvinternal.26.03.post1.48207566",
@@ -37,20 +30,14 @@
       "token_generation_speed_tps": 21.0,
       "note": "c=1, random dataset, --random-input-len 512 --random-output-len 256"
     },
-    "notes": "Single-user steady-state 28-30 tok/s (real-prompt). Theoretical ceiling ~91 tok/s. NVFP4 projected ~55-60 tok/s."
+    "notes": "Single-user steady-state 28-30 tok/s (real-prompt). Theoretical ceiling ~91 tok/s. NVFP4 projected ~55-60 tok/s.",
+    "hardware_id": "gb10-spark"
   },
   {
     "id": "eugr-gb10-fp8-dflash-vllm",
     "date": "2026-05-06",
     "source": "external",
     "source_url": "https://github.com/ZengboJamesWang/dgx-spark-vllm-qwen3.6-35b-a3b-dflash",
-    "device": {
-      "name": "GB10 (DGX Spark)",
-      "gpu": "NVIDIA GB10 (Grace Blackwell)",
-      "compute_cap": "SM 12.1",
-      "memory_bandwidth": "273 GB/s LPDDR5x",
-      "unified_memory": "128 GB"
-    },
     "engine": {
       "name": "vLLM",
       "version": null,
@@ -77,20 +64,14 @@
       "token_generation_speed_tps": 50.0,
       "note": "DFlash speculative decoding ready (requires vLLM with DFlash support). Benchmarks used 512 input / 256 output tokens."
     },
-    "notes": "~50 tok/s sustained. DFlash config present but not active in this baseline."
+    "notes": "~50 tok/s sustained. DFlash config present but not active in this baseline.",
+    "hardware_id": "gb10-spark"
   },
   {
     "id": "jetsonhacks-gb10-qwen3-coder-30b",
     "date": "2025-10-31",
     "source": "external",
     "source_url": "https://github.com/ggml-org/llama.cpp/discussions/16578",
-    "device": {
-      "name": "GB10 (DGX Spark)",
-      "gpu": "NVIDIA GB10 (Grace Blackwell)",
-      "compute_cap": "SM 12.1",
-      "memory_bandwidth": "273 GB/s LPDDR5x",
-      "unified_memory": "128 GB"
-    },
     "engine": {
       "name": "llama.cpp",
       "version": "b6767 (5acd45546)",
@@ -117,20 +98,14 @@
       "token_generation_speed_tps": 59.95,
       "note": "llama-bench tg32 at d0 (no context depth). Also tested: d4096=52.70, d8192=44.48, d16384=37.10, d32768=27.82."
     },
-    "notes": "tg32 @ d4096: 52.70, @d8192: 44.48, @d16384: 37.10, @d32768: 27.82. Context depth degrades MoE speed significantly."
+    "notes": "tg32 @ d4096: 52.70, @d8192: 44.48, @d16384: 37.10, @d32768: 27.82. Context depth degrades MoE speed significantly.",
+    "hardware_id": "gb10-spark"
   },
   {
     "id": "turboquant-gb10-nemotron-q4",
     "date": "2026-03-31",
     "source": "external",
     "source_url": "https://github.com/ggml-org/llama.cpp/discussions/20969#discussioncomment-16388331",
-    "device": {
-      "name": "GB10 (DGX Spark)",
-      "gpu": "NVIDIA GB10 (Grace Blackwell)",
-      "compute_cap": "SM 12.1",
-      "memory_bandwidth": "273 GB/s LPDDR5x",
-      "unified_memory": "128 GB"
-    },
     "engine": {
       "name": "llama.cpp",
       "version": "build 8399",
@@ -153,20 +128,14 @@
       "token_generation_speed_tps": 45.0,
       "note": "f16 KV cache at ~6K context. Also tested: q8_0@6K=44.9, q4_0@6K=45.0; f16@24K=44.6, q8_0@24K=39.7, q4_0@24K=39.3; f16@110K=38.0, q8_0@110K=25.0, q4_0@110K=24.0"
     },
-    "notes": "Generation throughput degrades with context depth and KV quantization: f16 @6K=44.7, q8_0 @6K=44.9, q4_0 @6K=45.0; f16 @24K=44.6, q8_0 @24K=39.7, q4_0 @24K=39.3; f16 @110K=38.0, q8_0 @110K=25.0, q4_0 @110K=24.0"
+    "notes": "Generation throughput degrades with context depth and KV quantization: f16 @6K=44.7, q8_0 @6K=44.9, q4_0 @6K=45.0; f16 @24K=44.6, q8_0 @24K=39.7, q4_0 @24K=39.3; f16 @110K=38.0, q8_0 @110K=25.0, q4_0 @110K=24.0",
+    "hardware_id": "gb10-spark"
   },
   {
     "id": "hackmd-3090-baseline",
     "date": "2026-04-22",
     "source": "external",
     "source_url": "https://hackmd.io/ODXuOQNzSiyUITz7g9mtBw",
-    "device": {
-      "name": "RTX 3090",
-      "gpu": "NVIDIA RTX 3090",
-      "compute_cap": "SM 8.6",
-      "memory_bandwidth": "~1000 GB/s GDDR6X",
-      "unified_memory": null
-    },
     "engine": {
       "name": "llama.cpp",
       "version": "97895129e (post PR #19493)",
@@ -195,20 +164,14 @@
       "token_generation_speed_tps": 135.7,
       "note": "baseline, no speculative decoding"
     },
-    "notes": "Baseline (no spec decode) = 135.7 tok/s. All spec-decode methods lose to baseline on this hardware."
+    "notes": "Baseline (no spec decode) = 135.7 tok/s. All spec-decode methods lose to baseline on this hardware.",
+    "hardware_id": "rtx-3090"
   },
   {
     "id": "hackmd-3090-mtp-draft",
     "date": "2026-04-22",
     "source": "external",
     "source_url": "https://hackmd.io/ODXuOQNzSiyUITz7g9mtBw",
-    "device": {
-      "name": "RTX 3090",
-      "gpu": "NVIDIA RTX 3090",
-      "compute_cap": "SM 8.6",
-      "memory_bandwidth": "~1000 GB/s GDDR6X",
-      "unified_memory": null
-    },
     "engine": {
       "name": "llama.cpp",
       "version": "97895129e (post PR #19493)",
@@ -241,20 +204,14 @@
       "token_generation_speed_tps": 65.0,
       "note": "Oleg --draft-min 2 --draft-max 32"
     },
-    "notes": "MTP draft model: 65 tok/s (−54% vs baseline 139.9). 100% acceptance but verify pass pays for full expert union."
+    "notes": "MTP draft model: 65 tok/s (−54% vs baseline 139.9). 100% acceptance but verify pass pays for full expert union.",
+    "hardware_id": "rtx-3090"
   },
   {
     "id": "hackmd-3090-dflash",
     "date": "2026-05-07",
     "source": "external",
     "source_url": "https://hackmd.io/ODXuOQNzSiyUITz7g9mtBw",
-    "device": {
-      "name": "RTX 3090",
-      "gpu": "NVIDIA RTX 3090",
-      "compute_cap": "SM 8.6",
-      "memory_bandwidth": "~1000 GB/s GDDR6X",
-      "unified_memory": null
-    },
     "engine": {
       "name": "llama.cpp",
       "version": "post PR #22105",
@@ -285,20 +242,14 @@
       "token_generation_speed_tps": 77.0,
       "note": "DFlash --draft-max=8"
     },
-    "notes": "DFlash: 77 tok/s (−44.6% vs baseline). BF16-trained drafter conditions on FP16/BF16 target hidden states, shifts under Q4 quantization."
+    "notes": "DFlash: 77 tok/s (−44.6% vs baseline). BF16-trained drafter conditions on FP16/BF16 target hidden states, shifts under Q4 quantization.",
+    "hardware_id": "rtx-3090"
   },
   {
     "id": "yunusshin-gb10-qwen35-baseline",
     "date": "2026-04-12",
     "source": "external",
     "source_url": "https://github.com/yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized",
-    "device": {
-      "name": "GB10 (DGX Spark)",
-      "gpu": "NVIDIA GB10 (Grace Blackwell)",
-      "compute_cap": "SM 12.1",
-      "memory_bandwidth": "273 GB/s LPDDR5x",
-      "unified_memory": "128 GB"
-    },
     "engine": {
       "name": "vLLM",
       "version": null,
@@ -328,20 +279,14 @@
       "token_generation_speed_tps": 64.1,
       "note": "Baseline: Intel INT4 AutoRound + FlashInfer, bench_qwen35.sh (5 prompts × 2 runs, temp=0.0, --random-input-len 512 --random-output-len 256). Max context supported: 262144."
     },
-    "notes": "Baseline before optimizations. Uses eugr/spark-vllm-docker base image."
+    "notes": "Baseline before optimizations. Uses eugr/spark-vllm-docker base image.",
+    "hardware_id": "gb10-spark"
   },
   {
     "id": "yunusshin-gb10-qwen35-int8-lmhead",
     "date": "2026-04-12",
     "source": "external",
     "source_url": "https://github.com/yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized",
-    "device": {
-      "name": "GB10 (DGX Spark)",
-      "gpu": "NVIDIA GB10 (Grace Blackwell)",
-      "compute_cap": "SM 12.1",
-      "memory_bandwidth": "273 GB/s LPDDR5x",
-      "unified_memory": "128 GB"
-    },
     "engine": {
       "name": "vLLM",
       "version": null,
@@ -372,20 +317,14 @@
       "token_generation_speed_tps": 82.8,
       "note": "+ INT8 LM Head v2: runtime per-channel INT8 quantization of 248K×2048 logits layer. bench_qwen35.sh (5 prompts × 2 runs, temp=0.0)."
     },
-    "notes": "INT8 LM Head patch applied dynamically at startup (model-agnostic, activates for any lm_head.dtype ∈ {bf16, fp16} with vocab_size > 100000). +29% gain."
+    "notes": "INT8 LM Head patch applied dynamically at startup (model-agnostic, activates for any lm_head.dtype ∈ {bf16, fp16} with vocab_size > 100000). +29% gain.",
+    "hardware_id": "gb10-spark"
   },
   {
     "id": "yunusshin-gb10-qwen35-mtp2",
     "date": "2026-04-12",
     "source": "external",
     "source_url": "https://github.com/yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized",
-    "device": {
-      "name": "GB10 (DGX Spark)",
-      "gpu": "NVIDIA GB10 (Grace Blackwell)",
-      "compute_cap": "SM 12.1",
-      "memory_bandwidth": "273 GB/s LPDDR5x",
-      "unified_memory": "128 GB"
-    },
     "engine": {
       "name": "vLLM",
       "version": null,
@@ -416,20 +355,14 @@
       "token_generation_speed_tps": 112.8,
       "note": "MTP-2 speculative decoding (recommended config), peak 125.3 tok/s. bench_qwen35.sh (5 prompts × 2 runs, temp=0.0)."
     },
-    "notes": "Qwen3.5-35B ships with native 785-tensor MTP head. Critical bug fix: build-hybrid-checkpoint.py strips MTP weights from model_extra_tensors.safetensors (2329 tensors), use add-mtp-weights.py after rebuild. Draft acceptance: code 92-98%, JSON 92-95%, math 80-85%, prose 78-90%."
+    "notes": "Qwen3.5-35B ships with native 785-tensor MTP head. Critical bug fix: build-hybrid-checkpoint.py strips MTP weights from model_extra_tensors.safetensors (2329 tensors), use add-mtp-weights.py after rebuild. Draft acceptance: code 92-98%, JSON 92-95%, math 80-85%, prose 78-90%.",
+    "hardware_id": "gb10-spark"
   },
   {
     "id": "yunusshin-gb10-qwen35-hybrid",
     "date": "2026-04-12",
     "source": "external",
     "source_url": "https://github.com/yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized",
-    "device": {
-      "name": "GB10 (DGX Spark)",
-      "gpu": "NVIDIA GB10 (Grace Blackwell)",
-      "compute_cap": "SM 12.1",
-      "memory_bandwidth": "273 GB/s LPDDR5x",
-      "unified_memory": "128 GB"
-    },
     "engine": {
       "name": "vLLM",
       "version": null,
@@ -461,20 +394,14 @@
       "token_generation_speed_tps": 114.8,
       "note": "Optional hybrid: replaces BF16 shared-expert MLPs with FP8 from Qwen official FP8 checkpoint. bench_qwen35.sh (5 prompts × 2 runs, temp=0.0)."
     },
-    "notes": "+1.8% over MTP-2 alone (marginal on 35B vs +9% on 122B). CUTLASS FP8 block-128 kernels have fixed per-launch overhead; shared-expert matrices only 512-wide on 35B = little to amortize. Skip --hybrid on 35B: +25 min build, +35 GB disk, +20 GB checkpoint for <2 tok/s."
+    "notes": "+1.8% over MTP-2 alone (marginal on 35B vs +9% on 122B). CUTLASS FP8 block-128 kernels have fixed per-launch overhead; shared-expert matrices only 512-wide on 35B = little to amortize. Skip --hybrid on 35B: +25 min build, +35 GB disk, +20 GB checkpoint for <2 tok/s.",
+    "hardware_id": "gb10-spark"
   },
   {
     "id": "r0b0tlab-gb10-nvfp4-sglang-mtp",
     "date": "2026-05-23",
     "source": "external",
     "source_url": "https://github.com/r0b0tlab/qwen36-35b-a3b-nvfp4-gb10-native-mtp",
-    "device": {
-      "name": "GB10 (DGX Spark)",
-      "gpu": "NVIDIA GB10 (Grace Blackwell)",
-      "compute_cap": "SM 12.1",
-      "memory_bandwidth": "273 GB/s LPDDR5x",
-      "unified_memory": "128 GB"
-    },
     "engine": {
       "name": "SGLang",
       "version": "dev-cu13 (lmsysorg/sglang:dev-cu13-nemotronh-nano-omni-reasoning-v3)",
@@ -504,20 +431,14 @@
       "token_generation_speed_tps": 61.49,
       "note": "c=1: 61.49 tok/s, c=2: 97.87 tok/s aggregate, c=4: 174.69 tok/s aggregate. Single long decode: 57.49 tok/s (512 tokens in 8.91s). MTP accept rate ~0.93 mean, accept length ~1.87/2."
     },
-    "notes": "SGLang native MTP on GB10 NVFP4. Includes patches/qwen3_5.py loader fix for compressed-tensors GDN linear-attention projections. No external DFlash draft — uses built-in model_mtp.safetensors from checkpoint."
+    "notes": "SGLang native MTP on GB10 NVFP4. Includes patches/qwen3_5.py loader fix for compressed-tensors GDN linear-attention projections. No external DFlash draft — uses built-in model_mtp.safetensors from checkpoint.",
+    "hardware_id": "gb10-spark"
   },
   {
     "id": "gb10-mtp-slot1-run1",
     "date": "2026-05-24",
     "source": "own-run",
     "source_url": null,
-    "device": {
-      "name": "GB10 (DGX Spark)",
-      "gpu": "NVIDIA GB10 (Grace Blackwell)",
-      "compute_cap": "SM 12.1",
-      "memory_bandwidth": "273 GB/s LPDDR5x",
-      "unified_memory": "128 GB"
-    },
     "engine": {
       "name": "llama.cpp",
       "version": "v222 (453a869)",
@@ -561,20 +482,14 @@
       "rounds": 10,
       "note": "Slot 1 (subagent), MTP enabled"
     },
-    "notes": "First benchmark run on GB10 with MTP. Consistent 51-56 tok/s range."
+    "notes": "First benchmark run on GB10 with MTP. Consistent 51-56 tok/s range.",
+    "hardware_id": "gb10-spark"
   },
   {
     "id": "gb10-mtp-slot1-run2",
     "date": "2026-05-24",
     "source": "own-run",
     "source_url": null,
-    "device": {
-      "name": "GB10 (DGX Spark)",
-      "gpu": "NVIDIA GB10 (Grace Blackwell)",
-      "compute_cap": "SM 12.1",
-      "memory_bandwidth": "273 GB/s LPDDR5x",
-      "unified_memory": "128 GB"
-    },
     "engine": {
       "name": "llama.cpp",
       "version": "v222 (453a869)",
@@ -618,20 +533,14 @@
       "rounds": 10,
       "note": "Slot 1 (subagent), MTP enabled"
     },
-    "notes": "Second benchmark run. Slightly lower avg tokens per run."
+    "notes": "Second benchmark run. Slightly lower avg tokens per run.",
+    "hardware_id": "gb10-spark"
   },
   {
     "id": "aeon-7-gb10-dflash-v4",
     "date": "2026-05-10",
     "source": "external",
     "source_url": "https://github.com/AEON-7/Qwen3.6-27B-AEON-Ultimate-Uncensored-DFlash",
-    "device": {
-      "name": "GB10 (DGX Spark)",
-      "gpu": "NVIDIA GB10 (Grace Blackwell)",
-      "compute_cap": "SM 12.1",
-      "memory_bandwidth": "273 GB/s LPDDR5x",
-      "unified_memory": "128 GB"
-    },
     "engine": {
       "name": "vLLM",
       "version": "0.20.2rc1.dev166+gf6490a284 (AEON v4 DFlash)",
@@ -663,20 +572,14 @@
       "token_generation_speed_tps": 37.56,
       "note": "Avg c=1 decode across 6 categories (coding/math/reasoning/prose/natural_language/extraction_json). Trimmed median, 16 samples each, 200 output tokens. Raw baseline: 10.49 tok/s (+258%)."
     },
-    "notes": "Lossless abliteration (KL=0.000492) + NVFP4 hardware quantization + DFlash k=15 spec decode on GB10. 0/100 refusals. Not MTP — uses external DFlash drafter."
+    "notes": "Lossless abliteration (KL=0.000492) + NVFP4 hardware quantization + DFlash k=15 spec decode on GB10. 0/100 refusals. Not MTP — uses external DFlash drafter.",
+    "hardware_id": "gb10-spark"
   },
   {
     "id": "docai-gb10-qwen36-fp8-mtp",
     "date": "2026-04-18",
     "source": "external",
     "source_url": "https://docai.hu/en/blog/qwen36-mtp-gb10",
-    "device": {
-      "name": "GB10 (DGX Spark)",
-      "gpu": "NVIDIA GB10 (Grace Blackwell)",
-      "compute_cap": "SM 12.1",
-      "memory_bandwidth": "273 GB/s LPDDR5x",
-      "unified_memory": "128 GB"
-    },
     "engine": {
       "name": "vLLM",
       "version": "0.19.1rc1.dev328+g18013df6a (cu130-nightly)",
@@ -709,20 +612,14 @@
       "token_generation_speed_tps": 54.92,
       "note": "Test A: single decode, 512 input / 512 output. Vanilla: 50.51 tok/s. +MTP: 54.92 (+8.7%). Acceptance rate 71.63%, acceptance length 2.43."
     },
-    "notes": "DocAI benchmark. MTP on GB10 shows +24% throughput at c=16 stress test (266 tok/s aggregate). GB10 unified memory makes spec decoding disproportionately useful under concurrent load vs H100/A100."
+    "notes": "DocAI benchmark. MTP on GB10 shows +24% throughput at c=16 stress test (266 tok/s aggregate). GB10 unified memory makes spec decoding disproportionately useful under concurrent load vs H100/A100.",
+    "hardware_id": "gb10-spark"
   },
   {
     "id": "docai-gb10-qwen36-fp8-mtp-c16",
     "date": "2026-04-18",
     "source": "external",
     "source_url": "https://docai.hu/en/blog/qwen36-mtp-gb10",
-    "device": {
-      "name": "GB10 (DGX Spark)",
-      "gpu": "NVIDIA GB10 (Grace Blackwell)",
-      "compute_cap": "SM 12.1",
-      "memory_bandwidth": "273 GB/s LPDDR5x",
-      "unified_memory": "128 GB"
-    },
     "engine": {
       "name": "vLLM",
       "version": "0.19.1rc1.dev328+g18013df6a (cu130-nightly)",
@@ -752,20 +649,14 @@
       "token_generation_speed_tps": 266.25,
       "note": "Test C: concurrent stress, 2048 input / 512 output, c=16. Vanilla: 214.28 tok/s. +MTP: 266.25 (+24.2%). Mean TTFT: -56.7%, Mean TPOT: -17.1%."
     },
-    "notes": "Surprise win: MTP +24% at c=16 on GB10, where on H100 it would be neutral/negative. Hypothesis: GB10 is memory-bandwidth-bound at high concurrency, MTP fills unused compute."
+    "notes": "Surprise win: MTP +24% at c=16 on GB10, where on H100 it would be neutral/negative. Hypothesis: GB10 is memory-bandwidth-bound at high concurrency, MTP fills unused compute.",
+    "hardware_id": "gb10-spark"
   },
   {
     "id": "atlas-gb10-qwen36-nvfp4-single",
     "date": "2026-05-07",
     "source": "external",
     "source_url": "https://github.com/Avarok-Cybersecurity/atlas",
-    "device": {
-      "name": "GB10 (DGX Spark)",
-      "gpu": "NVIDIA GB10 (Grace Blackwell)",
-      "compute_cap": "SM 12.1",
-      "memory_bandwidth": "273 GB/s LPDDR5x",
-      "unified_memory": "128 GB"
-    },
     "engine": {
       "name": "Atlas",
       "version": "latest (Rust/CUDA, avarok/atlas-gb10)",
@@ -796,20 +687,14 @@
       "token_generation_speed_tps": 138.9,
       "note": "Atlas Rust inference engine. JSON task: 138.9 tok/s. Also measured: Q&A 129.5, Code 134.8, LongCode 133.3, Math 90.9. Avg ~129 tok/s across tasks."
     },
-    "notes": "Pure Rust/CUDA engine, no PyTorch. Cold start <2 min. Native NVFP4 on tensor cores. MTP K=2 enabled by default."
+    "notes": "Pure Rust/CUDA engine, no PyTorch. Cold start <2 min. Native NVFP4 on tensor cores. MTP K=2 enabled by default.",
+    "hardware_id": "gb10-spark"
   },
   {
     "id": "atlas-gb10-qwen36-nvfp4-c4",
     "date": "2026-05-07",
     "source": "external",
     "source_url": "https://github.com/Avarok-Cybersecurity/atlas",
-    "device": {
-      "name": "GB10 (DGX Spark)",
-      "gpu": "NVIDIA GB10 (Grace Blackwell)",
-      "compute_cap": "SM 12.1",
-      "memory_bandwidth": "273 GB/s LPDDR5x",
-      "unified_memory": "128 GB"
-    },
     "engine": {
       "name": "Atlas",
       "version": "latest (Rust/CUDA, avarok/atlas-gb10)",
@@ -837,6 +722,7 @@
       "token_generation_speed_tps": 98.9,
       "note": "Atlas c=4 aggregate throughput. 4x 1024-token requests completed in 41.38s total."
     },
-    "notes": "Note: 4 parallel requests (98.9 agg = 24.7 per req) slower than single (129-140 tok/s). Atlas scheduling/conv1d behavior at concurrency."
+    "notes": "Note: 4 parallel requests (98.9 agg = 24.7 per req) slower than single (129-140 tok/s). Atlas scheduling/conv1d behavior at concurrency.",
+    "hardware_id": "gb10-spark"
   }
 ]
