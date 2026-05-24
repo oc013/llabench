@@ -288,59 +288,6 @@
     "notes": "DFlash: 77 tok/s (−44.6% vs baseline). BF16-trained drafter conditions on FP16/BF16 target hidden states, shifts under Q4 quantization."
   },
   {
-    "id": "carteakey-4070-mtp-n2",
-    "date": "2026-05-12",
-    "source": "external",
-    "source_url": "https://carteakey.dev/blog/running-qwen3-6-mtp-locally/",
-    "device": {
-      "name": "RTX 4070",
-      "gpu": "NVIDIA RTX 4070",
-      "compute_cap": "SM 8.9",
-      "memory_bandwidth": "~240 GB/s GDDR6X",
-      "unified_memory": null
-    },
-    "engine": {
-      "name": "llama.cpp",
-      "version": "mainline (post PR #19493 merge)",
-      "fork": null,
-      "fork_url": null,
-      "config": {
-        "flash_attn": true,
-        "batch_size": 1024,
-        "ubatch_size": 512,
-        "threads": 10,
-        "threads_batch": 12,
-        "no_mmap": true,
-        "mlock": true,
-        "parallel": 1,
-        "prio": 2,
-        "no_warmup": true,
-        "spec_type": "draft-mtp",
-        "spec_draft_n_max": 2,
-        "cache_type_k": "q8_0",
-        "cache_type_v": "q8_0",
-        "ctx_size": 131072,
-        "preserve_thinking": true
-      }
-    },
-    "model": {
-      "name": "unsloth/Qwen3.6-35B-A3B-MTP-GGUF",
-      "quant": "UD-Q4_K_XL",
-      "total_params": 35000000000,
-      "active_params": 3000000000,
-      "mtp": true
-    },
-    "test": {
-      "context_size": 131072,
-      "concurrency": 1,
-      "prompt_tokens": null,
-      "prompt_processing_speed_tps": null,
-      "token_generation_speed_tps": 75.1,
-      "note": "MTP n=2, Code (C++) task, 100% acceptance"
-    },
-    "notes": "MTP n=2: 65-75 tok/s vs baseline ~51 tok/s (+28 to +47%). n=2 is sweet spot; n=3+ drops due to draft overhead. Server-realistic: ~67 tok/s @ 128K context."
-  },
-  {
     "id": "yunusshin-gb10-qwen35-baseline",
     "date": "2026-04-12",
     "source": "external",
