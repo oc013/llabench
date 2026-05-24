@@ -355,7 +355,7 @@
       "token_generation_speed_tps": 65.0,
       "note": "Oleg --draft-min 2 --draft-max 32"
     },
-    "notes": "MTP draft model: 65 tok/s (−54% vs baseline 139.9). 100% acceptance but verify pass pays for full expert union."
+    "notes": "MTP draft model: 65 tok/s (\u221254% vs baseline 139.9). 100% acceptance but verify pass pays for full expert union."
   },
   {
     "id": "hackmd-3090-dflash",
@@ -399,7 +399,7 @@
       "token_generation_speed_tps": 77.0,
       "note": "DFlash --draft-max=8"
     },
-    "notes": "DFlash: 77 tok/s (−44.6% vs baseline). BF16-trained drafter conditions on FP16/BF16 target hidden states, shifts under Q4 quantization."
+    "notes": "DFlash: 77 tok/s (\u221244.6% vs baseline). BF16-trained drafter conditions on FP16/BF16 target hidden states, shifts under Q4 quantization."
   },
   {
     "id": "carteakey-4070-mtp-n2",
@@ -491,7 +491,7 @@
       "token_generation_speed_tps": 162.2,
       "note": "c=4, NVFP4, no drafter"
     },
-    "notes": "MTP net win condition: concurrency ≥ 4 ∧ nspec ≥ 3 ∧ accept ≥ 80% ∧ base decode not too fast. Single-stream MTP loses on Qwen 3.6 due to GDN layers not parallelizing during speculative verify."
+    "notes": "MTP net win condition: concurrency \u2265 4 \u2227 nspec \u2265 3 \u2227 accept \u2265 80% \u2227 base decode not too fast. Single-stream MTP loses on Qwen 3.6 due to GDN layers not parallelizing during speculative verify."
   },
   {
     "id": "yunusshin-gb10-qwen35-baseline",
@@ -511,7 +511,7 @@
       "fork": "eugr/spark-vllm-docker (SM121-compiled)",
       "fork_url": "https://github.com/eugr/spark-vllm-docker",
       "config": {
-        "gpu_memory_utilization": 0.90,
+        "gpu_memory_utilization": 0.9,
         "max_model_len": 262144,
         "enable_prefix_caching": false,
         "reasoning_parser": "qwen3",
@@ -532,7 +532,7 @@
       "prompt_tokens": 512,
       "prompt_processing_speed_tps": null,
       "token_generation_speed_tps": 64.1,
-      "note": "Baseline: Intel INT4 AutoRound + FlashInfer, bench_qwen35.sh (5 prompts × 2 runs, temp=0.0, --random-input-len 512 --random-output-len 256). Max context supported: 262144."
+      "note": "Baseline: Intel INT4 AutoRound + FlashInfer, bench_qwen35.sh (5 prompts \u00d7 2 runs, temp=0.0, --random-input-len 512 --random-output-len 256). Max context supported: 262144."
     },
     "notes": "Baseline before optimizations. Uses eugr/spark-vllm-docker base image."
   },
@@ -554,7 +554,7 @@
       "fork": "eugr/spark-vllm-docker + yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized",
       "fork_url": "https://github.com/yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized",
       "config": {
-        "gpu_memory_utilization": 0.90,
+        "gpu_memory_utilization": 0.9,
         "max_model_len": 262144,
         "enable_prefix_caching": false,
         "reasoning_parser": "qwen3",
@@ -576,9 +576,9 @@
       "prompt_tokens": 512,
       "prompt_processing_speed_tps": null,
       "token_generation_speed_tps": 82.8,
-      "note": "+ INT8 LM Head v2: runtime per-channel INT8 quantization of 248K×2048 logits layer. bench_qwen35.sh (5 prompts × 2 runs, temp=0.0)."
+      "note": "+ INT8 LM Head v2: runtime per-channel INT8 quantization of 248K\u00d72048 logits layer. bench_qwen35.sh (5 prompts \u00d7 2 runs, temp=0.0)."
     },
-    "notes": "INT8 LM Head patch applied dynamically at startup (model-agnostic, activates for any lm_head.dtype ∈ {bf16, fp16} with vocab_size > 100000). +29% gain."
+    "notes": "INT8 LM Head patch applied dynamically at startup (model-agnostic, activates for any lm_head.dtype \u2208 {bf16, fp16} with vocab_size > 100000). +29% gain."
   },
   {
     "id": "yunusshin-gb10-qwen35-mtp2",
@@ -598,7 +598,7 @@
       "fork": "eugr/spark-vllm-docker + yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized",
       "fork_url": "https://github.com/yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized",
       "config": {
-        "gpu_memory_utilization": 0.90,
+        "gpu_memory_utilization": 0.9,
         "max_model_len": 262144,
         "enable_prefix_caching": false,
         "reasoning_parser": "qwen3",
@@ -620,7 +620,7 @@
       "prompt_tokens": 512,
       "prompt_processing_speed_tps": null,
       "token_generation_speed_tps": 112.8,
-      "note": "MTP-2 speculative decoding (recommended config), peak 125.3 tok/s. bench_qwen35.sh (5 prompts × 2 runs, temp=0.0)."
+      "note": "MTP-2 speculative decoding (recommended config), peak 125.3 tok/s. bench_qwen35.sh (5 prompts \u00d7 2 runs, temp=0.0)."
     },
     "notes": "Qwen3.5-35B ships with native 785-tensor MTP head. Critical bug fix: build-hybrid-checkpoint.py strips MTP weights from model_extra_tensors.safetensors (2329 tensors), use add-mtp-weights.py after rebuild. Draft acceptance: code 92-98%, JSON 92-95%, math 80-85%, prose 78-90%."
   },
@@ -642,7 +642,7 @@
       "fork": "eugr/spark-vllm-docker + yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized (hybrid)",
       "fork_url": "https://github.com/yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized",
       "config": {
-        "gpu_memory_utilization": 0.90,
+        "gpu_memory_utilization": 0.9,
         "max_model_len": 262144,
         "enable_prefix_caching": false,
         "reasoning_parser": "qwen3",
@@ -665,8 +665,51 @@
       "prompt_tokens": 512,
       "prompt_processing_speed_tps": null,
       "token_generation_speed_tps": 114.8,
-      "note": "Optional hybrid: replaces BF16 shared-expert MLPs with FP8 from Qwen official FP8 checkpoint. bench_qwen35.sh (5 prompts × 2 runs, temp=0.0)."
+      "note": "Optional hybrid: replaces BF16 shared-expert MLPs with FP8 from Qwen official FP8 checkpoint. bench_qwen35.sh (5 prompts \u00d7 2 runs, temp=0.0)."
     },
     "notes": "+1.8% over MTP-2 alone (marginal on 35B vs +9% on 122B). CUTLASS FP8 block-128 kernels have fixed per-launch overhead; shared-expert matrices only 512-wide on 35B = little to amortize. Skip --hybrid on 35B: +25 min build, +35 GB disk, +20 GB checkpoint for <2 tok/s."
+  },
+  {
+    "id": "r0b0tlab-gb10-nvfp4-sglang-mtp",
+    "date": "2026-05-23",
+    "source": "external",
+    "source_url": "https://github.com/r0b0tlab/qwen36-35b-a3b-nvfp4-gb10-native-mtp",
+    "device": {
+      "name": "GB10 (DGX Spark)",
+      "gpu": "NVIDIA GB10 (Grace Blackwell)",
+      "compute_cap": "SM 12.1",
+      "memory_bandwidth": "273 GB/s LPDDR5x",
+      "unified_memory": "128 GB"
+    },
+    "engine": {
+      "name": "SGLang",
+      "version": "dev-cu13 (lmsysorg/sglang:dev-cu13-nemotronh-nano-omni-reasoning-v3)",
+      "fork": null,
+      "fork_url": null,
+      "config": {
+        "attention_backend": "flashinfer",
+        "fp4_gemm_runner_backend": "flashinfer_cutlass",
+        "moe_runner_backend": "flashinfer_cutlass",
+        "speculative_moe_runner_backend": "flashinfer_cutlass",
+        "speculative_algorithm": "EAGLE (NEXTN)",
+        "speculative_draft_model_path": "built-in model_mtp.safetensors"
+      }
+    },
+    "model": {
+      "name": "RedHatAI/Qwen3.6-35B-A3B-NVFP4",
+      "quant": "NVFP4 (compressed-tensors)",
+      "total_params": 35000000000,
+      "active_params": 3000000000,
+      "mtp": true
+    },
+    "test": {
+      "context_size": null,
+      "concurrency": null,
+      "prompt_tokens": null,
+      "prompt_processing_speed_tps": null,
+      "token_generation_speed_tps": 61.49,
+      "note": "c=1: 61.49 tok/s, c=2: 97.87 tok/s aggregate, c=4: 174.69 tok/s aggregate. Single long decode: 57.49 tok/s (512 tokens in 8.91s). MTP accept rate ~0.93 mean, accept length ~1.87/2."
+    },
+    "notes": "SGLang native MTP on GB10 NVFP4. Includes patches/qwen3_5.py loader fix for compressed-tensors GDN linear-attention projections. No external DFlash draft \u2014 uses built-in model_mtp.safetensors from checkpoint."
   }
 ]

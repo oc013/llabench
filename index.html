@@ -173,8 +173,7 @@
 </head>
 <body>
 
-<h1>llabench</h1>
-<p class="subtitle">Qwen3.6-35B-A3B Benchmark Database — GB10, RTX 3090, RTX 4070</p>
+<h1 style="margin-bottom:20px">llabench — LLM Benchmark Database</h1>
 
 <div class="stats" id="stats"></div>
 
@@ -182,6 +181,10 @@
   <div class="filter-group">
     <label>Search</label>
     <input type="text" id="search" placeholder="model, quant, notes...">
+  </div>
+  <div class="filter-group">
+    <label>Model</label>
+    <select id="filter-model"><option value="">All</option></select>
   </div>
   <div class="filter-group">
     <label>Device</label>
@@ -270,6 +273,7 @@ async function init() {
 
   // Event listeners
   document.getElementById('search').addEventListener('input', renderTable);
+  document.getElementById('filter-model').addEventListener('change', renderTable);
   document.getElementById('filter-device').addEventListener('change', renderTable);
   document.getElementById('filter-engine').addEventListener('change', renderTable);
   document.getElementById('filter-quant').addEventListener('change', renderTable);
@@ -283,14 +287,16 @@ async function init() {
 }
 
 function populateFilters() {
+  const models = [...new Set(benchmarks.map(b => b.model.name))].sort();
   const devices = [...new Set(benchmarks.map(b => b.device.name))].sort();
   const engines = [...new Set(benchmarks.map(b => b.engine.name))].sort();
   const quants = [...new Set(benchmarks.map(b => b.model.quant).filter(Boolean))].sort();
   const sources = [...new Set(benchmarks.map(b => b.source))].sort();
 
-  ['filter-device', 'filter-engine', 'filter-quant', 'filter-source'].forEach(id => {
+  ['filter-model', 'filter-device', 'filter-engine', 'filter-quant', 'filter-source'].forEach(id => {
     const sel = document.getElementById(id);
     const map = {
+      'filter-model': models,
       'filter-device': devices,
       'filter-engine': engines,
       'filter-quant': quants,
@@ -321,6 +327,7 @@ function updateStats() {
 
 function getFiltered() {
   const search = document.getElementById('search').value.toLowerCase();
+  const model = document.getElementById('filter-model').value;
   const device = document.getElementById('filter-device').value;
   const engine = document.getElementById('filter-engine').value;
   const quant = document.getElementById('filter-quant').value;
@@ -328,6 +335,7 @@ function getFiltered() {
   const source = document.getElementById('filter-source').value;
 
   return benchmarks.filter(b => {
+    if (model && b.model.name !== model) return false;
     if (device && b.device.name !== device) return false;
     if (engine && b.engine.name !== engine) return false;
     if (quant && b.model.quant !== quant) return false;
