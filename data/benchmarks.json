@@ -664,5 +664,179 @@
       "note": "Avg c=1 decode across 6 categories (coding/math/reasoning/prose/natural_language/extraction_json). Trimmed median, 16 samples each, 200 output tokens. Raw baseline: 10.49 tok/s (+258%)."
     },
     "notes": "Lossless abliteration (KL=0.000492) + NVFP4 hardware quantization + DFlash k=15 spec decode on GB10. 0/100 refusals. Not MTP — uses external DFlash drafter."
+  },
+  {
+    "id": "docai-gb10-qwen36-fp8-mtp",
+    "date": "2026-04-18",
+    "source": "external",
+    "source_url": "https://docai.hu/en/blog/qwen36-mtp-gb10",
+    "device": {
+      "name": "GB10 (DGX Spark)",
+      "gpu": "NVIDIA GB10 (Grace Blackwell)",
+      "compute_cap": "SM 12.1",
+      "memory_bandwidth": "273 GB/s LPDDR5x",
+      "unified_memory": "128 GB"
+    },
+    "engine": {
+      "name": "vLLM",
+      "version": "0.19.1rc1.dev328+g18013df6a (cu130-nightly)",
+      "fork": null,
+      "fork_url": null,
+      "config": {
+        "attention_backend": "flashinfer",
+        "moe_backend": "triton",
+        "kv_cache_dtype": "fp8_e4m3",
+        "gpu_memory_utilization": 0.45,
+        "max_model_len": 131072,
+        "max_num_seqs": 32,
+        "max_num_batched_tokens": 16384,
+        "speculative_algorithm": "mtp",
+        "spec_draft_n_max": 2
+      }
+    },
+    "model": {
+      "name": "Qwen/Qwen3.6-35B-A3B-FP8",
+      "quant": "FP8",
+      "total_params": 35000000000,
+      "active_params": 3000000000,
+      "mtp": true
+    },
+    "test": {
+      "context_size": 1024,
+      "concurrency": 1,
+      "prompt_tokens": 512,
+      "prompt_processing_speed_tps": null,
+      "token_generation_speed_tps": 54.92,
+      "note": "Test A: single decode, 512 input / 512 output. Vanilla: 50.51 tok/s. +MTP: 54.92 (+8.7%). Acceptance rate 71.63%, acceptance length 2.43."
+    },
+    "notes": "DocAI benchmark. MTP on GB10 shows +24% throughput at c=16 stress test (266 tok/s aggregate). GB10 unified memory makes spec decoding disproportionately useful under concurrent load vs H100/A100."
+  },
+  {
+    "id": "docai-gb10-qwen36-fp8-mtp-c16",
+    "date": "2026-04-18",
+    "source": "external",
+    "source_url": "https://docai.hu/en/blog/qwen36-mtp-gb10",
+    "device": {
+      "name": "GB10 (DGX Spark)",
+      "gpu": "NVIDIA GB10 (Grace Blackwell)",
+      "compute_cap": "SM 12.1",
+      "memory_bandwidth": "273 GB/s LPDDR5x",
+      "unified_memory": "128 GB"
+    },
+    "engine": {
+      "name": "vLLM",
+      "version": "0.19.1rc1.dev328+g18013df6a (cu130-nightly)",
+      "fork": null,
+      "fork_url": null,
+      "config": {
+        "attention_backend": "flashinfer",
+        "moe_backend": "triton",
+        "kv_cache_dtype": "fp8_e4m3",
+        "gpu_memory_utilization": 0.45,
+        "speculative_algorithm": "mtp",
+        "spec_draft_n_max": 2
+      }
+    },
+    "model": {
+      "name": "Qwen/Qwen3.6-35B-A3B-FP8",
+      "quant": "FP8",
+      "total_params": 35000000000,
+      "active_params": 3000000000,
+      "mtp": true
+    },
+    "test": {
+      "context_size": 4096,
+      "concurrency": 16,
+      "prompt_tokens": 2048,
+      "prompt_processing_speed_tps": null,
+      "token_generation_speed_tps": 266.25,
+      "note": "Test C: concurrent stress, 2048 input / 512 output, c=16. Vanilla: 214.28 tok/s. +MTP: 266.25 (+24.2%). Mean TTFT: -56.7%, Mean TPOT: -17.1%."
+    },
+    "notes": "Surprise win: MTP +24% at c=16 on GB10, where on H100 it would be neutral/negative. Hypothesis: GB10 is memory-bandwidth-bound at high concurrency, MTP fills unused compute."
+  },
+  {
+    "id": "atlas-gb10-qwen36-nvfp4-single",
+    "date": "2026-05-07",
+    "source": "external",
+    "source_url": "https://github.com/Avarok-Cybersecurity/atlas",
+    "device": {
+      "name": "GB10 (DGX Spark)",
+      "gpu": "NVIDIA GB10 (Grace Blackwell)",
+      "compute_cap": "SM 12.1",
+      "memory_bandwidth": "273 GB/s LPDDR5x",
+      "unified_memory": "128 GB"
+    },
+    "engine": {
+      "name": "Atlas",
+      "version": "latest (Rust/CUDA, avarok/atlas-gb10)",
+      "fork": "Avarok-Cybersecurity/atlas",
+      "fork_url": "https://github.com/Avarok-Cybersecurity/atlas",
+      "config": {
+        "attention_backend": "hand-tuned CUDA",
+        "quant_backend": "native NVFP4 tensor cores",
+        "mtp": true,
+        "mtp_k": 2,
+        "scheduling_policy": "slai",
+        "gpu_memory_utilization": 0.9,
+        "kv_cache_dtype": "fp8"
+      }
+    },
+    "model": {
+      "name": "RedHatAI/Qwen3.6-35B-A3B-NVFP4",
+      "quant": "NVFP4",
+      "total_params": 35000000000,
+      "active_params": 3000000000,
+      "mtp": true
+    },
+    "test": {
+      "context_size": 2048,
+      "concurrency": 1,
+      "prompt_tokens": null,
+      "prompt_processing_speed_tps": null,
+      "token_generation_speed_tps": 138.9,
+      "note": "Atlas Rust inference engine. JSON task: 138.9 tok/s. Also measured: Q&A 129.5, Code 134.8, LongCode 133.3, Math 90.9. Avg ~129 tok/s across tasks."
+    },
+    "notes": "Pure Rust/CUDA engine, no PyTorch. Cold start <2 min. Native NVFP4 on tensor cores. MTP K=2 enabled by default."
+  },
+  {
+    "id": "atlas-gb10-qwen36-nvfp4-c4",
+    "date": "2026-05-07",
+    "source": "external",
+    "source_url": "https://github.com/Avarok-Cybersecurity/atlas",
+    "device": {
+      "name": "GB10 (DGX Spark)",
+      "gpu": "NVIDIA GB10 (Grace Blackwell)",
+      "compute_cap": "SM 12.1",
+      "memory_bandwidth": "273 GB/s LPDDR5x",
+      "unified_memory": "128 GB"
+    },
+    "engine": {
+      "name": "Atlas",
+      "version": "latest (Rust/CUDA, avarok/atlas-gb10)",
+      "fork": "Avarok-Cybersecurity/atlas",
+      "fork_url": "https://github.com/Avarok-Cybersecurity/atlas",
+      "config": {
+        "attention_backend": "hand-tuned CUDA",
+        "quant_backend": "native NVFP4 tensor cores",
+        "mtp": true,
+        "mtp_k": 2
+      }
+    },
+    "model": {
+      "name": "RedHatAI/Qwen3.6-35B-A3B-NVFP4",
+      "quant": "NVFP4",
+      "total_params": 35000000000,
+      "active_params": 3000000000,
+      "mtp": true
+    },
+    "test": {
+      "context_size": 1024,
+      "concurrency": 4,
+      "prompt_tokens": null,
+      "prompt_processing_speed_tps": null,
+      "token_generation_speed_tps": 98.9,
+      "note": "Atlas c=4 aggregate throughput. 4x 1024-token requests completed in 41.38s total."
+    },
+    "notes": "Note: 4 parallel requests (98.9 agg = 24.7 per req) slower than single (129-140 tok/s). Atlas scheduling/conv1d behavior at concurrency."
   }
 ]
