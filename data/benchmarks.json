@@ -608,7 +608,7 @@
       "prompt_tokens": null,
       "prompt_processing_speed_tps": null,
       "token_generation_speed_tps": 138.9,
-      "note": "Atlas Rust inference engine. JSON task: 138.9 tok/s. Also measured: Q&A 129.5, Code 134.8, LongCode 133.3, Math 90.9. Avg ~129 tok/s across tasks."
+      "note": "Atlas total throughput (prompt+generation), not generation-only. JSON task: 615 tokens in 4.42s = 138.9 tok/s. Q&A: 106-169 tokens, Code: 181-183, LongCode: 2048. Math outlier (9 tokens). Avg ~129 tok/s total throughput across tasks."
     },
     "notes": "Pure Rust/CUDA engine, no PyTorch. Cold start <2 min. Native NVFP4 on tensor cores. MTP K=2 enabled by default.",
     "hardware_id": "gb10-spark"
