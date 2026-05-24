@@ -1,119 +1,5 @@
 [
   {
-    "id": "gb10-mtp-slot1-run1",
-    "date": "2026-05-24",
-    "source": "own-run",
-    "source_url": null,
-    "device": {
-      "name": "GB10 (DGX Spark)",
-      "gpu": "NVIDIA GB10 (Grace Blackwell)",
-      "compute_cap": "SM 12.1",
-      "memory_bandwidth": "273 GB/s LPDDR5x",
-      "unified_memory": "128 GB"
-    },
-    "engine": {
-      "name": "llama.cpp",
-      "version": "v222 (453a869)",
-      "fork": null,
-      "fork_url": null,
-      "config": {
-        "parallel": 2,
-        "flash_attn": true,
-        "kv_unified": true,
-        "cache_prompt": true,
-        "cache_reuse": 4096,
-        "no_cache_idle_slots": true,
-        "swa_full": true,
-        "spec_type": "draft-mtp",
-        "spec_draft_n_max": 3,
-        "spec_draft_p_min": 0.75,
-        "batch_size": 4096,
-        "ubatch_size": 2048,
-        "ctx_checkpoints": 32,
-        "checkpoint_min_step": 256,
-        "slot_prompt_similarity": 0.5,
-        "fit_on": true,
-        "fit_target": 1024,
-        "fit_ctx": 262144
-      }
-    },
-    "model": {
-      "name": "Qwen3.6-35B-A3B-uncensored-heretic-Native-MTP-Preserved-NVFP4-Experts-Only",
-      "quant": "NVFP4 Experts-Only",
-      "total_params": 35000000000,
-      "active_params": 3000000000,
-      "mtp": true
-    },
-    "test": {
-      "context_size": null,
-      "concurrency": 1,
-      "prompt_tokens": null,
-      "prompt_processing_speed_tps": null,
-      "token_generation_speed_tps": 54.0,
-      "avg_completion_tokens": 2308,
-      "rounds": 10,
-      "note": "Slot 1 (subagent), MTP enabled. Prompt ~200 tokens, avg completion ~2308 tokens per run."
-    },
-    "notes": "First benchmark run on GB10 with MTP. Consistent 51-56 tok/s range."
-  },
-  {
-    "id": "gb10-mtp-slot1-run2",
-    "date": "2026-05-24",
-    "source": "own-run",
-    "source_url": null,
-    "device": {
-      "name": "GB10 (DGX Spark)",
-      "gpu": "NVIDIA GB10 (Grace Blackwell)",
-      "compute_cap": "SM 12.1",
-      "memory_bandwidth": "273 GB/s LPDDR5x",
-      "unified_memory": "128 GB"
-    },
-    "engine": {
-      "name": "llama.cpp",
-      "version": "v222 (453a869)",
-      "fork": null,
-      "fork_url": null,
-      "config": {
-        "parallel": 2,
-        "flash_attn": true,
-        "kv_unified": true,
-        "cache_prompt": true,
-        "cache_reuse": 4096,
-        "no_cache_idle_slots": true,
-        "swa_full": true,
-        "spec_type": "draft-mtp",
-        "spec_draft_n_max": 3,
-        "spec_draft_p_min": 0.75,
-        "batch_size": 4096,
-        "ubatch_size": 2048,
-        "ctx_checkpoints": 32,
-        "checkpoint_min_step": 256,
-        "slot_prompt_similarity": 0.5,
-        "fit_on": true,
-        "fit_target": 1024,
-        "fit_ctx": 262144
-      }
-    },
-    "model": {
-      "name": "Qwen3.6-35B-A3B-uncensored-heretic-Native-MTP-Preserved-NVFP4-Experts-Only",
-      "quant": "NVFP4 Experts-Only",
-      "total_params": 35000000000,
-      "active_params": 3000000000,
-      "mtp": true
-    },
-    "test": {
-      "context_size": null,
-      "concurrency": 1,
-      "prompt_tokens": null,
-      "prompt_processing_speed_tps": null,
-      "token_generation_speed_tps": 53.0,
-      "avg_completion_tokens": 1994,
-      "rounds": 10,
-      "note": "Slot 1 (subagent), MTP enabled. Prompt ~200 tokens, avg completion ~1994 tokens per run."
-    },
-    "notes": "Second benchmark run. Slightly lower avg tokens per run."
-  },
-  {
     "id": "rikkarth-gb10-fp8-vllm",
     "date": "2026-04-23",
     "source": "external",
@@ -355,7 +241,7 @@
       "token_generation_speed_tps": 65.0,
       "note": "Oleg --draft-min 2 --draft-max 32"
     },
-    "notes": "MTP draft model: 65 tok/s (\u221254% vs baseline 139.9). 100% acceptance but verify pass pays for full expert union."
+    "notes": "MTP draft model: 65 tok/s (−54% vs baseline 139.9). 100% acceptance but verify pass pays for full expert union."
   },
   {
     "id": "hackmd-3090-dflash",
@@ -399,7 +285,7 @@
       "token_generation_speed_tps": 77.0,
       "note": "DFlash --draft-max=8"
     },
-    "notes": "DFlash: 77 tok/s (\u221244.6% vs baseline). BF16-trained drafter conditions on FP16/BF16 target hidden states, shifts under Q4 quantization."
+    "notes": "DFlash: 77 tok/s (−44.6% vs baseline). BF16-trained drafter conditions on FP16/BF16 target hidden states, shifts under Q4 quantization."
   },
   {
     "id": "carteakey-4070-mtp-n2",
@@ -491,7 +377,7 @@
       "token_generation_speed_tps": 162.2,
       "note": "c=4, NVFP4, no drafter"
     },
-    "notes": "MTP net win condition: concurrency \u2265 4 \u2227 nspec \u2265 3 \u2227 accept \u2265 80% \u2227 base decode not too fast. Single-stream MTP loses on Qwen 3.6 due to GDN layers not parallelizing during speculative verify."
+    "notes": "MTP net win condition: concurrency ≥ 4 ∧ nspec ≥ 3 ∧ accept ≥ 80% ∧ base decode not too fast. Single-stream MTP loses on Qwen 3.6 due to GDN layers not parallelizing during speculative verify."
   },
   {
     "id": "yunusshin-gb10-qwen35-baseline",
@@ -532,7 +418,7 @@
       "prompt_tokens": 512,
       "prompt_processing_speed_tps": null,
       "token_generation_speed_tps": 64.1,
-      "note": "Baseline: Intel INT4 AutoRound + FlashInfer, bench_qwen35.sh (5 prompts \u00d7 2 runs, temp=0.0, --random-input-len 512 --random-output-len 256). Max context supported: 262144."
+      "note": "Baseline: Intel INT4 AutoRound + FlashInfer, bench_qwen35.sh (5 prompts × 2 runs, temp=0.0, --random-input-len 512 --random-output-len 256). Max context supported: 262144."
     },
     "notes": "Baseline before optimizations. Uses eugr/spark-vllm-docker base image."
   },
@@ -576,9 +462,9 @@
       "prompt_tokens": 512,
       "prompt_processing_speed_tps": null,
       "token_generation_speed_tps": 82.8,
-      "note": "+ INT8 LM Head v2: runtime per-channel INT8 quantization of 248K\u00d72048 logits layer. bench_qwen35.sh (5 prompts \u00d7 2 runs, temp=0.0)."
+      "note": "+ INT8 LM Head v2: runtime per-channel INT8 quantization of 248K×2048 logits layer. bench_qwen35.sh (5 prompts × 2 runs, temp=0.0)."
     },
-    "notes": "INT8 LM Head patch applied dynamically at startup (model-agnostic, activates for any lm_head.dtype \u2208 {bf16, fp16} with vocab_size > 100000). +29% gain."
+    "notes": "INT8 LM Head patch applied dynamically at startup (model-agnostic, activates for any lm_head.dtype ∈ {bf16, fp16} with vocab_size > 100000). +29% gain."
   },
   {
     "id": "yunusshin-gb10-qwen35-mtp2",
@@ -620,7 +506,7 @@
       "prompt_tokens": 512,
       "prompt_processing_speed_tps": null,
       "token_generation_speed_tps": 112.8,
-      "note": "MTP-2 speculative decoding (recommended config), peak 125.3 tok/s. bench_qwen35.sh (5 prompts \u00d7 2 runs, temp=0.0)."
+      "note": "MTP-2 speculative decoding (recommended config), peak 125.3 tok/s. bench_qwen35.sh (5 prompts × 2 runs, temp=0.0)."
     },
     "notes": "Qwen3.5-35B ships with native 785-tensor MTP head. Critical bug fix: build-hybrid-checkpoint.py strips MTP weights from model_extra_tensors.safetensors (2329 tensors), use add-mtp-weights.py after rebuild. Draft acceptance: code 92-98%, JSON 92-95%, math 80-85%, prose 78-90%."
   },
@@ -665,7 +551,7 @@
       "prompt_tokens": 512,
       "prompt_processing_speed_tps": null,
       "token_generation_speed_tps": 114.8,
-      "note": "Optional hybrid: replaces BF16 shared-expert MLPs with FP8 from Qwen official FP8 checkpoint. bench_qwen35.sh (5 prompts \u00d7 2 runs, temp=0.0)."
+      "note": "Optional hybrid: replaces BF16 shared-expert MLPs with FP8 from Qwen official FP8 checkpoint. bench_qwen35.sh (5 prompts × 2 runs, temp=0.0)."
     },
     "notes": "+1.8% over MTP-2 alone (marginal on 35B vs +9% on 122B). CUTLASS FP8 block-128 kernels have fixed per-launch overhead; shared-expert matrices only 512-wide on 35B = little to amortize. Skip --hybrid on 35B: +25 min build, +35 GB disk, +20 GB checkpoint for <2 tok/s."
   },
@@ -710,6 +596,6 @@
       "token_generation_speed_tps": 61.49,
       "note": "c=1: 61.49 tok/s, c=2: 97.87 tok/s aggregate, c=4: 174.69 tok/s aggregate. Single long decode: 57.49 tok/s (512 tokens in 8.91s). MTP accept rate ~0.93 mean, accept length ~1.87/2."
     },
-    "notes": "SGLang native MTP on GB10 NVFP4. Includes patches/qwen3_5.py loader fix for compressed-tensors GDN linear-attention projections. No external DFlash draft \u2014 uses built-in model_mtp.safetensors from checkpoint."
+    "notes": "SGLang native MTP on GB10 NVFP4. Includes patches/qwen3_5.py loader fix for compressed-tensors GDN linear-attention projections. No external DFlash draft — uses built-in model_mtp.safetensors from checkpoint."
   }
 ]
