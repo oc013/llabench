@@ -240,12 +240,26 @@ let sortCol = 'date';
 let sortDir = -1; // -1 = desc, 1 = asc
 
 async function init() {
-  try {
-    const res = await fetch('data/benchmarks.json');
-    benchmarks = await res.json();
-  } catch(e) {
-    console.error('Failed to load benchmarks:', e);
-    document.getElementById('bench-body').innerHTML = '<tr><td colspan="8" class="empty">Failed to load data: ' + e.message + '</td></tr>';
+  const sources = ['data/benchmarks.json', 'results/gb10_mtp_slot1.json'];
+  benchmarks = [];
+
+  for (const src of sources) {
+    try {
+      const res = await fetch(src);
+      const data = await res.json();
+      // Handle both single object and array
+      if (Array.isArray(data)) {
+        benchmarks.push(...data);
+      } else {
+        benchmarks.push(data);
+      }
+    } catch(e) {
+      console.warn(`Skipped ${src}:`, e.message);
+    }
+  }
+
+  if (benchmarks.length === 0) {
+    document.getElementById('bench-body').innerHTML = '<tr><td colspan="8" class="empty">No benchmark data found.</td></tr>';
     return;
   }
 
