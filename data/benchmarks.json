@@ -684,5 +684,41 @@
       "note": "Single decode, 512 input / 512 output. Vanilla: 50.51 tok/s (+8.7%). MTP acceptance rate: 71.63%."
     },
     "notes": "DocAI benchmark on GB10/vLLM. Global acceptance rate across all tests: 72.53%."
+  },
+  {
+    "id": "avarok-gb10-qwen3next-nvfp4-flashinfer",
+    "date": "2025-12-30",
+    "source": "external",
+    "source_url": "https://blog.avarok.net/from-20-to-35-tokens-second-optimizing-nvfp4-inference-on-blackwell-gb10-306a84bff467",
+    "hardware_id": "gb10-spark",
+    "engine": {
+      "name": "vLLM",
+      "version": "nightly + flashinfer 0.6.0rc2",
+      "fork": "avarok/vllm-dgx-spark:v14",
+      "fork_url": null,
+      "config": {
+        "attention_backend": "flashinfer (compiled with CUDA arch 12.1f)",
+        "quant_backend": "cutlass NVFP4 GEMM",
+        "gpu_memory_utilization": 0.7,
+        "max_model_len": 32768,
+        "load_format": "fastsafetensors"
+      }
+    },
+    "model": {
+      "name": "RESMP-DEV/Qwen3-Next-80B-A3B-Instruct-NVFP4",
+      "quant": "NVFP4",
+      "total_params": 80000000000,
+      "active_params": 3000000000,
+      "mtp": false
+    },
+    "test": {
+      "context_size": null,
+      "concurrency": 1,
+      "prompt_tokens": 12,
+      "prompt_processing_speed_tps": null,
+      "token_generation_speed_tps": 34.93,
+      "note": "Qwen3-Next-80B-A3B-NVFP4 on GB10/vLLM. FlashInfer compiled with CUDA arch 12.1f (not 12.0f). Peak: 36 tok/s. FP8 version of same model: 44 t/s (NVFP4 slower than FP8 at time of test)."
+    },
+    "notes": "Key finding: NVFP4 on GB10 was bottlenecked by FlashInfer compilation (needed 12.1f). Even with fix, NVFP4 (35 tok/s) was slower than FP8 (44 tok/s) for Qwen3-Next-80B. Cutlass fallback used for NVFP4 GEMM."
   }
 ]
