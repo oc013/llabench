@@ -45,14 +45,14 @@
       "mtp": true
     },
     "test": {
-      "context_size": 262144,
+      "context_size": null,
       "concurrency": 1,
       "prompt_tokens": null,
       "prompt_processing_speed_tps": null,
       "token_generation_speed_tps": 54.0,
       "avg_completion_tokens": 2308,
       "rounds": 10,
-      "note": "Slot 1 (subagent), MTP enabled"
+      "note": "Slot 1 (subagent), MTP enabled. Prompt ~200 tokens, avg completion ~2308 tokens per run."
     },
     "notes": "First benchmark run on GB10 with MTP. Consistent 51-56 tok/s range."
   },
@@ -102,14 +102,14 @@
       "mtp": true
     },
     "test": {
-      "context_size": 262144,
+      "context_size": null,
       "concurrency": 1,
       "prompt_tokens": null,
       "prompt_processing_speed_tps": null,
       "token_generation_speed_tps": 53.0,
       "avg_completion_tokens": 1994,
       "rounds": 10,
-      "note": "Slot 1 (subagent), MTP enabled"
+      "note": "Slot 1 (subagent), MTP enabled. Prompt ~200 tokens, avg completion ~1994 tokens per run."
     },
     "notes": "Second benchmark run. Slightly lower avg tokens per run."
   },
@@ -144,7 +144,7 @@
       "mtp": false
     },
     "test": {
-      "context_size": 262144,
+      "context_size": 768,
       "concurrency": 1,
       "prompt_tokens": 512,
       "prompt_processing_speed_tps": null,
@@ -184,12 +184,12 @@
       "mtp": false
     },
     "test": {
-      "context_size": 262144,
+      "context_size": 768,
       "concurrency": 1,
       "prompt_tokens": 512,
       "prompt_processing_speed_tps": null,
       "token_generation_speed_tps": 50.0,
-      "note": "DFlash speculative decoding ready (requires vLLM with DFlash support)"
+      "note": "DFlash speculative decoding ready (requires vLLM with DFlash support). Benchmarks used 512 input / 256 output tokens."
     },
     "notes": "~50 tok/s sustained. DFlash config present but not active in this baseline."
   },
@@ -224,12 +224,12 @@
       "mtp": false
     },
     "test": {
-      "context_size": 262144,
+      "context_size": 2048,
       "concurrency": 1,
       "prompt_tokens": 2048,
       "prompt_processing_speed_tps": 2933.39,
       "token_generation_speed_tps": 59.95,
-      "note": "llama-bench tg32, no context depth"
+      "note": "llama-bench tg32 at d0 (no context depth). Also tested: d4096=52.70, d8192=44.48, d16384=37.10, d32768=27.82."
     },
     "notes": "tg32 @ d4096: 52.70, @d8192: 44.48, @d16384: 37.10, @d32768: 27.82. Context depth degrades MoE speed significantly."
   },
@@ -260,12 +260,12 @@
       "mtp": false
     },
     "test": {
-      "context_size": 128000,
+      "context_size": 6144,
       "concurrency": 1,
       "prompt_tokens": null,
-      "prompt_processing_speed_tps": null,
+      "prompt_processing_speed_tps": 1206,
       "token_generation_speed_tps": 45.0,
-      "note": "f16 KV cache at ~6K context"
+      "note": "f16 KV cache at ~6K context. Also tested: q8_0@6K=44.9, q4_0@6K=45.0; f16@24K=44.6, q8_0@24K=39.7, q4_0@24K=39.3; f16@110K=38.0, q8_0@110K=25.0, q4_0@110K=24.0"
     },
     "notes": "Generation throughput degrades with context depth and KV quantization: f16 @6K=44.7, q8_0 @6K=44.9, q4_0 @6K=45.0; f16 @24K=44.6, q8_0 @24K=39.7, q4_0 @24K=39.3; f16 @110K=38.0, q8_0 @110K=25.0, q4_0 @110K=24.0"
   },

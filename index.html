@@ -215,7 +215,8 @@
       <tr>
         <th data-col="id" onclick="sortTable('id')">ID <span class="sort-arrow">↕</span></th>
         <th data-col="date" onclick="sortTable('date')">Date <span class="sort-arrow">↕</span></th>
-        <th data-col="device.name" onclick="sortTable('device.name')">Device <span class="sort-arrow">↕</span></th>
+        <th data-col="device.name" onclick="sortTable('device.name')" style="max-width:200px">Device <span class="sort-arrow">↕</span></th>
+        <th data-col="model.name" onclick="sortTable('model.name')" style="max-width:300px">Model <span class="sort-arrow">↕</span></th>
         <th data-col="engine.name" onclick="sortTable('engine.name')">Engine <span class="sort-arrow">↕</span></th>
         <th data-col="model.quant" onclick="sortTable('model.quant')">Quant <span class="sort-arrow">↕</span></th>
         <th data-col="test.context_size" onclick="sortTable('test.context_size')">Context <span class="sort-arrow">↕</span></th>
@@ -408,6 +409,7 @@ function renderTable() {
       <td><code>${b.id}</code></td>
       <td>${b.date}</td>
       <td class="device-name">${b.device.name}</td>
+      <td class="model-name" title="${b.model.name}">${b.model.name.length > 50 ? b.model.name.substring(0, 50) + '…' : b.model.name}</td>
       <td>${b.engine.name}${b.engine.fork ? '<br><small style="color:var(--text-muted)">' + b.engine.fork.split('/')[1] + '</small>' : ''}</td>
       <td><span class="quant-tag">${b.model.quant || '—'}</span></td>
       <td>${formatContext(b.test.context_size)}</td>
