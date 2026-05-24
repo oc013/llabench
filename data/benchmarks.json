@@ -494,7 +494,7 @@
     "notes": "MTP net win condition: concurrency ≥ 4 ∧ nspec ≥ 3 ∧ accept ≥ 80% ∧ base decode not too fast. Single-stream MTP loses on Qwen 3.6 due to GDN layers not parallelizing during speculative verify."
   },
   {
-    "id": "yunusshin-gb10-qwen35-optimized",
+    "id": "yunusshin-gb10-qwen35-baseline",
     "date": "2026-04-12",
     "source": "external",
     "source_url": "https://github.com/yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized",
@@ -508,25 +508,165 @@
     "engine": {
       "name": "vLLM",
       "version": null,
-      "fork": "yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized",
-      "fork_url": "https://github.com/yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized",
-      "config": {}
+      "fork": "eugr/spark-vllm-docker (SM121-compiled)",
+      "fork_url": "https://github.com/eugr/spark-vllm-docker",
+      "config": {
+        "gpu_memory_utilization": 0.90,
+        "max_model_len": 262144,
+        "enable_prefix_caching": false,
+        "reasoning_parser": "qwen3",
+        "tool_call_parser": "qwen3_xml",
+        "flashinfer_backend": "latency"
+      }
     },
     "model": {
-      "name": "Qwen3.5-35B-A3B",
-      "quant": null,
+      "name": "Qwen3.5-35B-A3B (Intel AutoRound INT4)",
+      "quant": "INT4 AutoRound",
       "total_params": 35000000000,
       "active_params": 3000000000,
       "mtp": false
     },
     "test": {
-      "context_size": null,
+      "context_size": 768,
       "concurrency": 1,
-      "prompt_tokens": null,
+      "prompt_tokens": 512,
       "prompt_processing_speed_tps": null,
-      "token_generation_speed_tps": 115.0,
-      "note": "64 → 113-115 tok/s (+77%) with optimizations"
+      "token_generation_speed_tps": 64.1,
+      "note": "Baseline: Intel INT4 AutoRound + FlashInfer, bench_qwen35.sh (5 prompts × 2 runs, temp=0.0, --random-input-len 512 --random-output-len 256). Max context supported: 262144."
     },
-    "notes": "Port of albond's v2 optimizations from Qwen3.5-122B down to 35B. Model is Qwen3.5 (not 3.6)."
+    "notes": "Baseline before optimizations. Uses eugr/spark-vllm-docker base image."
+  },
+  {
+    "id": "yunusshin-gb10-qwen35-int8-lmhead",
+    "date": "2026-04-12",
+    "source": "external",
+    "source_url": "https://github.com/yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized",
+    "device": {
+      "name": "GB10 (DGX Spark)",
+      "gpu": "NVIDIA GB10 (Grace Blackwell)",
+      "compute_cap": "SM 12.1",
+      "memory_bandwidth": "273 GB/s LPDDR5x",
+      "unified_memory": "128 GB"
+    },
+    "engine": {
+      "name": "vLLM",
+      "version": null,
+      "fork": "eugr/spark-vllm-docker + yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized",
+      "fork_url": "https://github.com/yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized",
+      "config": {
+        "gpu_memory_utilization": 0.90,
+        "max_model_len": 262144,
+        "enable_prefix_caching": false,
+        "reasoning_parser": "qwen3",
+        "tool_call_parser": "qwen3_xml",
+        "int8_lm_head_v2": true,
+        "flashinfer_backend": "latency"
+      }
+    },
+    "model": {
+      "name": "Qwen3.5-35B-A3B (Intel AutoRound INT4 + INT8 LM Head)",
+      "quant": "INT4 AutoRound + INT8 LM Head v2",
+      "total_params": 35000000000,
+      "active_params": 3000000000,
+      "mtp": false
+    },
+    "test": {
+      "context_size": 768,
+      "concurrency": 1,
+      "prompt_tokens": 512,
+      "prompt_processing_speed_tps": null,
+      "token_generation_speed_tps": 82.8,
+      "note": "+ INT8 LM Head v2: runtime per-channel INT8 quantization of 248K×2048 logits layer. bench_qwen35.sh (5 prompts × 2 runs, temp=0.0)."
+    },
+    "notes": "INT8 LM Head patch applied dynamically at startup (model-agnostic, activates for any lm_head.dtype ∈ {bf16, fp16} with vocab_size > 100000). +29% gain."
+  },
+  {
+    "id": "yunusshin-gb10-qwen35-mtp2",
+    "date": "2026-04-12",
+    "source": "external",
+    "source_url": "https://github.com/yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized",
+    "device": {
+      "name": "GB10 (DGX Spark)",
+      "gpu": "NVIDIA GB10 (Grace Blackwell)",
+      "compute_cap": "SM 12.1",
+      "memory_bandwidth": "273 GB/s LPDDR5x",
+      "unified_memory": "128 GB"
+    },
+    "engine": {
+      "name": "vLLM",
+      "version": null,
+      "fork": "eugr/spark-vllm-docker + yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized",
+      "fork_url": "https://github.com/yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized",
+      "config": {
+        "gpu_memory_utilization": 0.90,
+        "max_model_len": 262144,
+        "enable_prefix_caching": false,
+        "reasoning_parser": "qwen3",
+        "tool_call_parser": "qwen3_xml",
+        "speculative_config": "MTP-2",
+        "flashinfer_backend": "latency"
+      }
+    },
+    "model": {
+      "name": "Qwen3.5-35B-A3B (INT4 + INT8 LM Head + MTP-2)",
+      "quant": "INT4 AutoRound + INT8 LM Head",
+      "total_params": 35000000000,
+      "active_params": 3000000000,
+      "mtp": true
+    },
+    "test": {
+      "context_size": 768,
+      "concurrency": 1,
+      "prompt_tokens": 512,
+      "prompt_processing_speed_tps": null,
+      "token_generation_speed_tps": 112.8,
+      "note": "MTP-2 speculative decoding (recommended config), peak 125.3 tok/s. bench_qwen35.sh (5 prompts × 2 runs, temp=0.0)."
+    },
+    "notes": "Qwen3.5-35B ships with native 785-tensor MTP head. Critical bug fix: build-hybrid-checkpoint.py strips MTP weights from model_extra_tensors.safetensors (2329 tensors), use add-mtp-weights.py after rebuild. Draft acceptance: code 92-98%, JSON 92-95%, math 80-85%, prose 78-90%."
+  },
+  {
+    "id": "yunusshin-gb10-qwen35-hybrid",
+    "date": "2026-04-12",
+    "source": "external",
+    "source_url": "https://github.com/yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized",
+    "device": {
+      "name": "GB10 (DGX Spark)",
+      "gpu": "NVIDIA GB10 (Grace Blackwell)",
+      "compute_cap": "SM 12.1",
+      "memory_bandwidth": "273 GB/s LPDDR5x",
+      "unified_memory": "128 GB"
+    },
+    "engine": {
+      "name": "vLLM",
+      "version": null,
+      "fork": "eugr/spark-vllm-docker + yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized (hybrid)",
+      "fork_url": "https://github.com/yunusshin/DGX_Spark_Qwen3.5-35B-A3B-Optimized",
+      "config": {
+        "gpu_memory_utilization": 0.90,
+        "max_model_len": 262144,
+        "enable_prefix_caching": false,
+        "reasoning_parser": "qwen3",
+        "tool_call_parser": "qwen3_xml",
+        "speculative_config": "MTP-2",
+        "hybrid_int4_fp8": true,
+        "flashinfer_backend": "latency"
+      }
+    },
+    "model": {
+      "name": "Qwen3.5-35B-A3B (Hybrid INT4+FP8 + MTP-2)",
+      "quant": "Hybrid INT4+FP8",
+      "total_params": 35000000000,
+      "active_params": 3000000000,
+      "mtp": true
+    },
+    "test": {
+      "context_size": 768,
+      "concurrency": 1,
+      "prompt_tokens": 512,
+      "prompt_processing_speed_tps": null,
+      "token_generation_speed_tps": 114.8,
+      "note": "Optional hybrid: replaces BF16 shared-expert MLPs with FP8 from Qwen official FP8 checkpoint. bench_qwen35.sh (5 prompts × 2 runs, temp=0.0)."
+    },
+    "notes": "+1.8% over MTP-2 alone (marginal on 35B vs +9% on 122B). CUTLASS FP8 block-128 kernels have fixed per-launch overhead; shared-expert matrices only 512-wide on 35B = little to amortize. Skip --hybrid on 35B: +25 min build, +35 GB disk, +20 GB checkpoint for <2 tok/s."
   }
 ]
