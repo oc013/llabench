@@ -45,12 +45,12 @@
       "mtp": true
     },
     "test": {
-      "context_size": 262144,
-      "concurrency": 1,
-      "prompt_tokens": null,
-      "prompt_processing_speed_tps": null,
-      "token_generation_speed_tps": 54.0,
-      "avg_completion_tokens": 2308,
+"context_size": 2820,
+            "concurrency": 1,
+            "prompt_tokens": 512,
+            "prompt_processing_speed_tps": null,
+            "token_generation_speed_tps": 54.0,
+            "avg_completion_tokens": 2308,
       "rounds": 10,
       "note": "Slot 1 (subagent), MTP enabled"
     },
@@ -102,12 +102,12 @@
       "mtp": true
     },
     "test": {
-      "context_size": 262144,
-      "concurrency": 1,
-      "prompt_tokens": null,
-      "prompt_processing_speed_tps": null,
-      "token_generation_speed_tps": 53.0,
-      "avg_completion_tokens": 1994,
+"context_size": 2506,
+            "concurrency": 1,
+            "prompt_tokens": 512,
+            "prompt_processing_speed_tps": null,
+            "token_generation_speed_tps": 53.0,
+            "avg_completion_tokens": 1994,
       "rounds": 10,
       "note": "Slot 1 (subagent), MTP enabled"
     },
