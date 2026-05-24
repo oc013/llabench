@@ -375,7 +375,7 @@
       "prompt_tokens": null,
       "prompt_processing_speed_tps": null,
       "token_generation_speed_tps": 162.2,
-      "note": "c=4, NVFP4, no drafter"
+      "note": "c=4, NVFP4, no drafter. Context size not specified in source."
     },
     "notes": "MTP net win condition: concurrency ≥ 4 ∧ nspec ≥ 3 ∧ accept ≥ 80% ∧ base decode not too fast. Single-stream MTP loses on Qwen 3.6 due to GDN layers not parallelizing during speculative verify."
   },
@@ -589,7 +589,7 @@
       "mtp": true
     },
     "test": {
-      "context_size": null,
+      "context_size": 512,
       "concurrency": null,
       "prompt_tokens": null,
       "prompt_processing_speed_tps": null,
