@@ -244,18 +244,16 @@ let sortCol = 'date';
 let sortDir = -1; // -1 = desc, 1 = asc
 
 function normalizeModel(name) {
-  // Strip variant suffixes: keep only base model identifier
-  const parts = name.split('-');
-  // Base pattern: Qwen3.6-35B-A3B or Qwen3.6-27B etc.
-  // Find the last part that looks like a model size/variant (digit+letter combo)
-  let idx = parts.length;
-  for (let i = parts.length - 1; i >= 0; i--) {
-    if (/^\d+[A-Z]/.test(parts[i])) {
-      idx = i + 1;
-      break;
-    }
-  }
-  return parts.slice(0, idx).join('-');
+  // Strip org prefix and parenthetical notes first
+  let cleaned = name.replace(/^[^/]*\//, '').replace(/\s*\(.*?\)/g, '');
+  // Qwen family: base = Qwen<major>.<minor>-<params><arch> (arch like A3B may have trailing letter)
+  const qwen = cleaned.match(/^(Qwen[\d.]+-\d+[A-Z]+(?:-[A-Z]\d+[A-Z]?)?)/);
+  if (qwen) return qwen[1];
+  // Nemotron family: base = Nemotron-<ver>-<params><arch>
+  const nemotron = cleaned.match(/^(Nemotron-[\d.]+-\d+[A-Z]\d+)/);
+  if (nemotron) return nemotron[1];
+  // Fallback: return as-is
+  return cleaned;
 }
 
 function normalizeQuant(q) {
