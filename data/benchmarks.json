@@ -755,5 +755,48 @@
       "note": "Single-stream median (T=0 greedy, 10 trials). p95: 127.5, min: 41.1. Mixed-domain prompts."
     },
     "notes": "DFlash spec decode k=15 (not MTP). Drafter: z-lab/Qwen3.6-35B-A3B-DFlash (~905MB). Acceptance: 62-78% pos-0, 2.7-4.4 mean accepted tokens per target step. Throughput plateaus ~313 tok/s from c=64 (GB10 compute wall on 3B-active MoE + linear-attn layers + DFlash overhead). Zero errors across 1,200+ requests. Concurrency ramp (T=0.7, 200-tok): c=1 agg 102.9/per-req 109.1, c=4 128.1/48.5, c=16 227.6/19.3, c=64 310.8/6.9, c=128 313.6/6.5 tok/s (agg/per-req). Plateaus ~313."
+  },
+  {
+    "id": "croll83-gb10-qwopus27b-dflash",
+    "date": "2026-05-05",
+    "source": "external",
+    "source_url": "https://github.com/croll83/llama.cpp-dgx",
+    "hardware_id": "gb10-spark",
+    "engine": {
+      "name": "llama.cpp",
+      "version": "fork (upstream 0adede866)",
+      "fork": "croll83/llama.cpp-dgx",
+      "fork_url": "https://github.com/croll83/llama.cpp-dgx",
+      "config": {
+        "dflash": true,
+        "dflash_budget": 22,
+        "dflash_max_ctx": 131072,
+        "dflash_prefill_ubatch": 192,
+        "dflash_fa_window": 16384,
+        "dflash_fa_sink": 16384,
+        "ctx_size": 262144,
+        "num_persistent_slots": 2,
+        "kv_cache_k": "q8_0",
+        "kv_cache_v": "q8_0",
+        "cache_reuse": 256,
+        "slot_prompt_similarity": 0.5,
+        "reasoning": "auto"
+      }
+    },
+    "model": {
+      "name": "croll83/Qwopus3.6-27B-v1-Abliterated-preview",
+      "quant": "NVFP4",
+      "total_params": 27000000000.0,
+      "active_params": null,
+      "mtp": false
+    },
+    "test": {
+      "context_size": 1024,
+      "concurrency": 1,
+      "prompt_tokens": null,
+      "token_generation_speed_tps": 68.7,
+      "note": "JSON 1024 (color names), thinking on"
+    },
+    "notes": "llama.cpp-dgx fork optimized for GB10 (sm_121a). DFlash MTP with Qwen3.6-27B-DFlash draft (5 layers, 4 SWA + 1 full). np=2, c=262144. Qwopus = fine-tuned derivative of Qwen3.6-27B (hybrid arch: 16 FA + 48 GDN layers, 262K context). Full workload suite (thinking on): JSON 1024=68.7 t/s (65% accept), MATH 256=45.7 (46%), CODE 512=38.3 (47%), LongCode 2048=38.0 (43%), PROSE 400=27.1 (29%). PROSE 400 thinking off=18.7 (20%). Accept rate correlates with workload complexity. DFlash FA window 16384 caps attention at long context."
   }
 ]
